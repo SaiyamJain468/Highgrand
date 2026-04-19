@@ -105,9 +105,9 @@ export default function Navbar() {
           {/* Mobile Toggle */}
           <button
             className="md:hidden text-brand-white p-2 relative z-50"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => setMenuOpen(true)}
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={24} />
           </button>
         </div>
       </nav>
@@ -124,6 +124,13 @@ export default function Navbar() {
           >
             {/* Background Texture Element */}
             <div className="absolute top-0 right-0 w-[80vw] h-[80vw] bg-brand-border/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+
+            <button
+              className="absolute top-8 right-6 text-brand-white p-2 z-50"
+              onClick={() => setMenuOpen(false)}
+            >
+              <X size={32} />
+            </button>
 
             <motion.div
               variants={containerVariants}
