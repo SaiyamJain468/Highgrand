@@ -1,17 +1,45 @@
 "use client"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export function TestimonialCarousel() {
   const testimonials = [
-    { text: "Highgrand's oversized tees changed my entire brand's trajectory. 220 GSM quality feels incredibly premium.", author: "Rahul M.", business: "Urban Origins", city: "Mumbai" },
-    { text: "No MOQ combined with their wholesale pricing allows me to test drops without massive upfront risk.", author: "Sneha P.", business: "The Street Edit", city: "Bangalore" },
-    { text: "Fit and finish is standard. Bio-washed cotton holds up perfectly even after 20+ washes.", author: "Arjun S.", business: "Varsity Co", city: "Delhi" },
-    { text: "My customers noticed the upgrade in fabric quality instantly. Worth every penny.", author: "Karan T.", business: "Hype Beast", city: "Pune" },
-    { text: "Finally a reliable blank supplier in India that actually stands by their manufacturing times.", author: "Amit R.", business: "Void Wear", city: "Ahmedabad" },
-    { text: "Highgrand's oversized tees changed my entire brand's trajectory. 220 GSM quality feels incredibly premium.", author: "Rahul M.", business: "Urban Origins", city: "Mumbai" },
-    { text: "No MOQ combined with their wholesale pricing allows me to test drops without massive upfront risk.", author: "Sneha P.", business: "The Street Edit", city: "Bangalore" },
-    { text: "Fit and finish is standard. Bio-washed cotton holds up perfectly even after 20+ washes.", author: "Arjun S.", business: "Varsity Co", city: "Delhi" },
+    { 
+      text: "Highgrand's oversized tees changed my entire brand's trajectory. 220 GSM quality feels incredibly premium.", 
+      author: "Rahul Malhotra", 
+      business: "Urban Origins", 
+      city: "Mumbai",
+      image: "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?q=80&w=400&auto=format&fit=crop"
+    },
+    { 
+      text: "No MOQ combined with their wholesale pricing allows me to test drops without massive upfront risk.", 
+      author: "Sneha Patel", 
+      business: "The Street Edit", 
+      city: "Bangalore",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop"
+    },
+    { 
+      text: "Fit and finish is world-standard. Bio-washed cotton holds up perfectly even after 20+ washes.", 
+      author: "Arjun Sharma", 
+      business: "Varsity Co", 
+      city: "Delhi",
+      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop"
+    },
+    { 
+      text: "My customers noticed the upgrade in fabric quality instantly. Worth every penny for quality.", 
+      author: "Karan Tiwari", 
+      business: "Hype Beast", 
+      city: "Pune",
+      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=400&auto=format&fit=crop"
+    },
+    { 
+      text: "Finally a reliable blank supplier in India that actually stands by their manufacturing times.", 
+      author: "Ananya Iyer", 
+      business: "Void Wear", 
+      city: "Ahmedabad",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop"
+    },
   ]
 
   return (
@@ -70,8 +98,13 @@ export function TestimonialCarousel() {
               </div>
               
               <div className="flex items-center gap-4 relative z-10 border-t border-brand-border/50 pt-6">
-                <div className="w-14 h-14 bg-[#111] border border-brand-accent/30 rounded-full flex items-center justify-center font-bebas text-[24px] text-brand-accent drop-shadow-md">
-                  {t.author.charAt(0)}
+                <div className="w-14 h-14 rounded-full overflow-hidden border border-brand-accent/50 relative">
+                  <Image 
+                    src={t.image} 
+                    alt={t.author} 
+                    fill 
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <p className="font-inter font-bold text-[15px] text-brand-white uppercase tracking-wider">{t.business}</p>

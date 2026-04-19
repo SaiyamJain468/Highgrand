@@ -21,21 +21,20 @@ export default function SkewSection({ children }: { children: ReactNode }) {
 
   const scrollVelocity = useVelocity(scrollYProgress)
   
-  // Transform velocity into skew
-  const skewVelocity = useTransform(scrollVelocity, [-1, 1], [-5, 5])
+  // Subtle skew: -2deg to 2deg on mobile, -5deg to 5deg on desktop
+  const skewRange = isMobile ? [-2, 2] : [-5, 5]
+  const skewVelocity = useTransform(scrollVelocity, [-1, 1], skewRange)
+  
   const skewSpring = useSpring(skewVelocity, {
-    stiffness: 100,
-    damping: 30
+    stiffness: 120, // Snappier
+    damping: 40
   })
-
-  // Only apply skew on desktop for performance and cleaner mobile UX
-  if (isMobile) return <div ref={ref}>{children}</div>
 
   return (
     <motion.div
       ref={ref}
       style={{ skewY: skewSpring }}
-      className="origin-center transition-transform duration-300"
+      className="origin-center"
     >
       {children}
     </motion.div>

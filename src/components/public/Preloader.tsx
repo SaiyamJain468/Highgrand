@@ -29,26 +29,22 @@ export default function Preloader() {
 
     const timeout = setTimeout(() => {
       setIndex(prev => prev + 1)
-    }, index === 0 ? 800 : 120) // Slightly faster transitions
+    }, index === 0 ? 800 : 100) // Even snappier
 
     return () => clearTimeout(timeout)
   }, [index])
 
   useEffect(() => {
+    const minDuration = 2000
+    const startTime = Date.now()
+    
     const handleLoad = () => {
-      const minDuration = 1800
-      const startTime = Date.now()
+      const elapsedTime = Date.now() - startTime
+      const remainingTime = Math.max(0, minDuration - elapsedTime)
       
-      const checkAndExit = () => {
-        const elapsedTime = Date.now() - startTime
-        if (elapsedTime >= minDuration && index >= greetings.length - 1) {
-          setLoading(false)
-        } else {
-          setTimeout(checkAndExit, 50)
-        }
-      }
-      
-      checkAndExit()
+      setTimeout(() => {
+        setLoading(false)
+      }, remainingTime)
     }
 
     if (document.readyState === "complete") {
@@ -57,7 +53,7 @@ export default function Preloader() {
       window.addEventListener("load", handleLoad)
       return () => window.removeEventListener("load", handleLoad)
     }
-  }, [index])
+  }, [])
 
   return (
     <AnimatePresence>
@@ -65,11 +61,28 @@ export default function Preloader() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
-            y: "-100%", 
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+            opacity: 0,
+            transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] as any, delay: 0.5 } 
           }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-black"
         >
+          {/* Transition Panels */}
+          <div className="absolute inset-0 flex z-[-1] pointer-events-none">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ transform: "translateY(0%)" }}
+                exit={{ transform: "translateY(-100%)" }}
+                transition={{ 
+                  duration: 0.8, 
+                  ease: [0.76, 0, 0.24, 1] as any,
+                  delay: i * 0.05
+                }}
+                className="flex-1 bg-brand-accentSurface border-x border-brand-border/10"
+              />
+            ))}
+          </div>
+
           <div className="relative overflow-hidden h-[50px] sm:h-[80px]">
             <motion.p
               key={index}

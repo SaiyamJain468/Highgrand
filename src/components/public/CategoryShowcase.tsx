@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function CategoryShowcase() {
   const categories = [
@@ -23,7 +24,7 @@ export default function CategoryShowcase() {
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any } 
     }
   }
 
@@ -68,10 +69,12 @@ export default function CategoryShowcase() {
               whileHover={{ y: -10 }}
               className="group block relative aspect-[16/10] md:aspect-[3/4] overflow-hidden bg-brand-black border border-brand-border hover:border-brand-accent/50 transition-colors duration-500 rounded-[2px]"
             >
-              <img 
+              <Image 
                 src={category.image} 
                 alt={category.name}
-                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 group-hover:scale-105"
+                fill
+                className="object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
               
               <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80" />

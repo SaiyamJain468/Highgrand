@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 
@@ -60,7 +61,13 @@ export default async function FeaturedProducts() {
             <Link key={product.id} href={`/products/${product.slug}`} className="group min-w-[75vw] sm:min-w-[360px] md:min-w-[420px] snap-start block bg-[#080808] border border-brand-border/30 rounded-[2px] transition-all duration-500 hover:border-brand-accent/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative overflow-hidden">
               <div className="aspect-[4/5] overflow-hidden relative bg-brand-surface2">
                 <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                <img src={image} alt={product.name} className="w-full h-full object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" />
+                <Image 
+                  src={image} 
+                  alt={product.name} 
+                  fill
+                  className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" 
+                  sizes="(max-width: 768px) 75vw, (max-width: 1200px) 420px, 420px"
+                />
                 
                 <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
                   <span className="bg-brand-black/80 backdrop-blur-md border border-brand-border/50 px-3 py-1.5 flex items-center gap-2 font-inter text-[10px] font-bold uppercase tracking-[0.1em] text-brand-white">

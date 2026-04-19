@@ -1,6 +1,8 @@
 "use client"
 import { Truck, Factory, ShieldCheck, Zap } from "lucide-react"
 import { motion } from "framer-motion"
+import Image from "next/image"
+import BrandMarquee from "./BrandMarquee"
 
 export default function HomeSections() {
   return (
@@ -76,11 +78,21 @@ export default function HomeSections() {
                 Operating out of our core facility in New Delhi, we control every aspect of the process from premium knitting to bio-washing.
               </p>
               
+              <div className="mb-12">
+                <BrandMarquee />
+              </div>
+
               <div className="flex gap-6 items-center">
                  <div className="flex -space-x-4">
-                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#222] z-30"></div>
-                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#333] z-20"></div>
-                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#444] z-10"></div>
+                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#222] z-30 overflow-hidden relative">
+                      <Image src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?q=80&w=400&fit=crop" alt="User" fill className="object-cover" />
+                    </div>
+                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#333] z-20 overflow-hidden relative">
+                      <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&fit=crop" alt="User" fill className="object-cover" />
+                    </div>
+                    <div className="w-12 h-12 rounded-full border-2 border-brand-black bg-[#444] z-10 overflow-hidden relative">
+                      <Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&fit=crop" alt="User" fill className="object-cover" />
+                    </div>
                  </div>
                  <p className="font-inter text-[14px] text-brand-muted font-medium">Trusted by <span className="text-brand-white">650+ Active Brands</span> in India</p>
               </div>

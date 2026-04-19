@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Magnetic from "./Magnetic"
+import TextReveal from "./TextReveal"
 
 const heroWord = {
   hidden: { opacity: 0, y: 56, skewY: 5 },
@@ -64,25 +65,11 @@ export default function Hero() {
           DELHI'S FACTORY DIRECT MANUFACTURER
         </motion.p>
 
-        <motion.h1 
-          className="font-bebas text-[42px] sm:text-[96px] md:text-[120px] lg:text-[140px] text-brand-white leading-[0.85] tracking-tight mb-8"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.02, delayChildren: 0.4 } }
-          }}
-        >
-          {headline.split("").map((char, i) => (
-            <motion.span 
-              key={i} 
-              variants={charVariants} 
-              className={`inline-block ${char === " " ? "mr-2 md:mr-8" : ""} hover:text-brand-accent transition-colors duration-300 drop-shadow-2xl`}
-            >
-              {char}
-            </motion.span>
-          ))}
-        </motion.h1>
+        <h1 className="font-bebas text-[42px] sm:text-[96px] md:text-[120px] lg:text-[140px] text-brand-white leading-[0.85] tracking-tight mb-8">
+          <TextReveal delay={0.4} staggerChildren={0.03}>
+            {headline}
+          </TextReveal>
+        </h1>
 
         <motion.p 
           initial={{ opacity: 0, filter: "blur(5px)" }}
