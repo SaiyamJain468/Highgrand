@@ -6,7 +6,6 @@ declare module "next-auth" {
       id: string
       role: string
       status: string
-      businessName?: string | null
     } & DefaultSession["user"]
   }
 
@@ -14,7 +13,6 @@ declare module "next-auth" {
     id: string
     role: string
     status: string
-    businessName?: string | null
   }
 }
 
@@ -23,6 +21,5 @@ declare module "next-auth/jwt" {
     id: string
     role: string
     status: string
-    businessName?: string | null
   }
 }
