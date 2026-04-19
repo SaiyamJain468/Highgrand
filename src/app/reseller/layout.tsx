@@ -27,7 +27,9 @@ export default async function ResellerLayout({ children }: { children: React.Rea
           <Link href="/products" className="flex items-center gap-3 px-4 py-3 text-brand-muted hover:text-brand-white hover:bg-brand-surface2 hover:border hover:border-brand-border font-inter text-[13px] font-medium border border-transparent transition-colors">
             <ShoppingBag size={16} /> Shop Catalog
           </Link>
-          {/* Future sections */}
+          <Link href="/reseller/profile" className="flex items-center gap-3 px-4 py-3 text-brand-muted hover:text-brand-white hover:bg-brand-surface2 hover:border hover:border-brand-border font-inter text-[13px] font-medium border border-transparent transition-colors">
+            <User size={16} /> My Profile
+          </Link>
         </nav>
 
         <div className="p-4 border-t border-brand-border">
