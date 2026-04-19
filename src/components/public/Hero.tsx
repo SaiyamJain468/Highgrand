@@ -7,21 +7,21 @@ import TextReveal from "./TextReveal"
 
 const heroWord = {
   hidden: { opacity: 0, y: 56, skewY: 5 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     skewY: 0,
-    transition: { duration: 0.7 } 
+    transition: { duration: 0.7 }
   }
 }
 
 const charVariants = {
   hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } 
+    transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] }
   }
 }
 
@@ -30,37 +30,37 @@ export default function Hero() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
 
   return (
-    <section className="relative h-screen min-h-[640px] bg-brand-black flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-[640px] bg-brand-black flex items-center justify-center overflow-hidden w-full max-w-full">
       {/* Cinematic Ken Burns Background with Mouse Parallax */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div 
-          className="absolute inset-0 bg-brand-black" 
+        <motion.div
+          className="absolute inset-0 bg-brand-black"
           animate={{ background: ["#050505", "#0a0a0a", "#050505"] }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-           className="absolute inset-0"
-           initial={{ scale: 1.0 }}
-           animate={{ scale: 1.05 }}
-           transition={{ duration: 20, repeat: Infinity, repeatType: "mirror" }}
+          className="absolute inset-0"
+          initial={{ scale: 1.0 }}
+          animate={{ scale: 1.05 }}
+          transition={{ duration: 20, repeat: Infinity, repeatType: "mirror" }}
         >
-          <motion.img 
+          <motion.img
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
             transition={{ duration: 2 }}
-            src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop"
             alt="Highgrand Factory"
             className="w-full h-full object-cover mix-blend-luminosity"
           />
         </motion.div>
-        
+
         {/* Vignette Overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] opacity-90 mix-blend-multiply" />
       </div>
 
       {/* Content */}
       <div className="relative z-20 default-container w-full text-center flex flex-col items-center">
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1.2, delay: 0.5 }}
@@ -75,7 +75,7 @@ export default function Hero() {
           </TextReveal>
         </h1>
 
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, filter: "blur(5px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
           transition={{ duration: 0.8, delay: 1.2 }}
@@ -84,7 +84,7 @@ export default function Hero() {
           Wholesale oversized apparel for ambitious resellers, streetwear boutiques & online brands across India.
         </motion.p>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
@@ -109,7 +109,7 @@ export default function Hero() {
       </div>
 
       {/* Trust Strip */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
@@ -125,7 +125,7 @@ export default function Hero() {
           ))}
         </div>
       </motion.div>
-      
+
       <style jsx>{`
         .glow-pulse {
           animation: glow 2s ease-in-out infinite alternate;

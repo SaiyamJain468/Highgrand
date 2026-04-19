@@ -21,7 +21,7 @@
   --font-bebas: "Bebas Neue", sans-serif;
   --font-inter: "Inter", sans-serif;
   --font-playfair: "Playfair Display", serif;
-  
+
   --animate-marquee: marquee 25s linear infinite;
   --animate-pulse-ring: pulse_ring 2.5s ease-out infinite;
 }
@@ -32,63 +32,107 @@
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes pulse_ring {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.9); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
 }
 
 /* Lenis Smooth Scroll Stability */
 html.lenis {
- scroll-behavior: auto !important;
- height: auto;
+  scroll-behavior: auto !important;
+  height: auto;
 }
 
 .lenis.lenis-smooth {
- scroll-behavior: auto !important;
+  scroll-behavior: auto !important;
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
- overscroll-behavior: contain;
+  overscroll-behavior: contain;
 }
 
 .lenis.lenis-stopped {
- overflow: hidden;
+  overflow: hidden;
 }
 
 .lenis.lenis-scrolling iframe {
- pointer-events: none;
+  pointer-events: none;
+}
+
+/* Hard Kill All Scrollbars Everywhere */
+* {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html {
+  background: #000000;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
- background: var(--background);
- color: var(--foreground);
- font-family: var(--font-inter);
- overscroll-behavior: none;
- overflow-x: hidden;
- width: 100%;
- position: relative;
+  background: #000000;
+  color: var(--foreground);
+  font-family: var(--font-inter);
+  overscroll-behavior: none;
+  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent layout shifts */
+html,
+body {
+  scrollbar-gutter: stable;
 }
 
 /* Base utility classes */
 .wide {
- @apply max-w-[1440px] mx-auto px-6 xl:px-20;
+  @apply max-w-[1440px] mx-auto px-6 xl:px-20;
 }
+
 .default-container {
- @apply max-w-[1200px] mx-auto px-6 lg:px-10;
+  @apply max-w-[1200px] mx-auto px-6 lg:px-10;
 }
+
 .narrow {
- @apply max-w-[720px] mx-auto px-6;
+  @apply max-w-[720px] mx-auto px-6;
 }
 
 /* Hide scrollbar */
 .hide-scrollbar::-webkit-scrollbar {
- display: none;
+  display: none;
 }
+
 .hide-scrollbar {
- -ms-overflow-style: none;
- scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

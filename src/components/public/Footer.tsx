@@ -23,7 +23,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-black border-t border-brand-border pt-16 md:pt-24 pb-12 relative overflow-hidden">
       {/* Industrial Watermark */}
-      <div className="absolute -bottom-6 md:-bottom-10 -left-6 md:-left-10 font-bebas text-[100px] sm:text-[150px] md:text-[300px] text-brand-white/5 leading-none select-none pointer-events-none">
+      <div className="absolute -bottom-6 md:-bottom-10 -left-6 md:-left-10 font-bebas text-[100px] sm:text-[150px] md:text-[300px] text-brand-white/5 leading-none select-none pointer-events-none w-screen overflow-hidden">
         HIGHGRAND
       </div>
 

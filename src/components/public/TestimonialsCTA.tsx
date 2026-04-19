@@ -23,7 +23,7 @@ export function TestimonialCarousel() {
   const items = [...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials]
 
   return (
-    <section className="bg-[#050505] border-y border-brand-border py-40 overflow-hidden relative">
+    <section className="bg-[#050505] border-y border-brand-border py-40 overflow-x-hidden relative">
       {/* Deep Background Glows */}
       <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-brand-accent/5 rounded-full blur-[140px] -translate-y-1/2 -translate-x-1/3 pointer-events-none" />
       <div className="absolute top-1/2 right-0 w-[600px] h-[600px] bg-brand-success/5 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
@@ -51,7 +51,7 @@ export function TestimonialCarousel() {
       </div>
       
       {/* Infinite scrolling marquee using Framer Motion */}
-      <div className="flex relative z-10 py-10 overflow-hidden">
+      <div className="flex relative z-10 py-10 overflow-hidden scroll-smooth hide-scrollbar">
         <motion.div 
           className="flex gap-8 whitespace-nowrap min-w-max px-4"
           initial={{ x: 0 }}
@@ -100,46 +100,76 @@ export function TestimonialCarousel() {
 
 export function BottomCTA() {
   return (
-    <section className="bg-brand-black relative py-32 md:py-48 border-b border-brand-border overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop')] bg-cover bg-center md:bg-fixed opacity-[0.08] mix-blend-luminosity"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black z-0"></div>
+    <section className="bg-brand-black relative py-32 md:py-64 border-t border-brand-border overflow-hidden flex items-center justify-center w-full max-w-full">
+      {/* Dynamic Background Parallax Label */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none overflow-hidden">
+        <motion.span 
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1] as any }}
+          className="font-bebas text-[20vw] md:text-[25vw] leading-none text-brand-white whitespace-nowrap"
+        >
+          ARCHIVAL PARTNER ARCHIVAL PARTNER
+        </motion.span>
+      </div>
 
-      <div className="default-container relative z-10 text-center max-w-[800px] w-full px-4 overflow-hidden">
-        <motion.h2 
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="font-bebas text-[54px] sm:text-[80px] md:text-[120px] leading-[0.85] text-brand-white uppercase mb-8 tracking-tight drop-shadow-2xl break-words"
-        >
-          READY TO BECOME<br/>A RESELLER?
-        </motion.h2>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-inter text-[18px] md:text-[20px] text-brand-muted mb-14 max-w-[640px] mx-auto leading-relaxed"
-        >
-          Join 650+ resellers across India scaling their fashion brands with Highgrand's premium zero-MOQ wholesale apparel line.
-        </motion.p>
-        <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ delay: 0.5 }}
-        >
-          <Link href="/register" passHref>
-             <motion.div 
-               whileHover={{ scale: 1.05 }}
-               whileTap={{ scale: 0.95 }}
-               className="inline-block bg-brand-white text-brand-black px-14 py-5 font-inter font-bold text-[15px] uppercase tracking-[0.15em] cursor-pointer hover:bg-brand-accent hover:text-brand-black shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(20,200,80,0.4)] transition-all duration-300"
-             >
-               Register Free Now
-             </motion.div>
-          </Link>
-        </motion.div>
+      {/* Atmospheric Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-accent/5 rounded-full blur-[160px] pointer-events-none" />
+
+      <div className="default-container relative z-10 w-full max-w-full px-6 flex flex-col items-center">
+        <div className="w-full max-w-[900px] bg-[#0A0A0A]/60 backdrop-blur-3xl border border-brand-border/40 rounded-[2px] p-12 md:p-24 text-center relative group">
+          {/* Internal Accents */}
+          <div className="absolute top-0 left-0 w-20 h-[1px] bg-gradient-to-r from-brand-accent to-transparent" />
+          <div className="absolute top-0 left-0 w-[1px] h-20 bg-gradient-to-b from-brand-accent to-transparent" />
+          <div className="absolute bottom-0 right-0 w-20 h-[1px] bg-gradient-to-l from-brand-accent to-transparent" />
+          <div className="absolute bottom-0 right-0 w-[1px] h-20 bg-gradient-to-t from-brand-accent to-transparent" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] as any }}
+          >
+            <h2 className="font-bebas text-[48px] sm:text-[64px] md:text-[100px] leading-[0.9] text-brand-white uppercase mb-8 tracking-tighter">
+              Ready to scale<br/>
+              <span className="text-brand-accent">Beyond The Ordinary?</span>
+            </h2>
+            <p className="font-inter text-[15px] md:text-[18px] text-brand-muted mb-16 max-w-[540px] mx-auto leading-relaxed">
+              Join 650+ elite brands across India leveraging Highgrand's industrial infrastructure to scale without inventory barriers.
+            </p>
+            
+            <Link href="/register" passHref>
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-6 bg-brand-white text-brand-black px-10 md:px-16 py-5 md:py-6 font-inter font-black text-[13px] md:text-[14px] uppercase tracking-[0.2em] cursor-pointer relative overflow-hidden group/btn"
+              >
+                <span className="relative z-10">Register Securely Now</span>
+                <div className="absolute inset-0 bg-brand-accent translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
+              </motion.div>
+            </Link>
+          </motion.div>
+
+          {/* Subtext info */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.3 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-16 flex justify-center items-center gap-8 border-t border-brand-border/30 pt-8"
+          >
+            <div className="flex flex-col items-center">
+              <span className="font-bebas text-[24px] text-brand-white">0%</span>
+              <span className="font-inter text-[9px] uppercase tracking-widest text-brand-muted">Inventory Risk</span>
+            </div>
+            <div className="w-[1px] h-6 bg-brand-border/30" />
+            <div className="flex flex-col items-center">
+              <span className="font-bebas text-[24px] text-brand-white">ISO</span>
+              <span className="font-inter text-[9px] uppercase tracking-widest text-brand-muted">Precision Ops</span>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )
 }
+
