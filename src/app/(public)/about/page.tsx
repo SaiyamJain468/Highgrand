@@ -6,6 +6,7 @@ import TextReveal from "@/components/public/TextReveal"
 import Magnetic from "@/components/public/Magnetic"
 import LegacyTimeline from "@/components/public/LegacyTimeline"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function AboutPage() {
   const stats = [
@@ -46,7 +47,13 @@ export default function AboutPage() {
               transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
               className="w-full lg:w-1/2 aspect-[4/5] bg-brand-surface2 border border-brand-border p-4 relative"
             >
-              <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=800&auto=format&fit=crop" alt="Factory" className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 transition-all duration-1000" />
+              <Image 
+                src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=800&auto=format&fit=crop" 
+                alt="Factory" 
+                fill
+                className="object-cover grayscale opacity-60 hover:grayscale-0 transition-all duration-1000"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
               <div className="absolute inset-0 border border-brand-accent/20 translate-x-4 translate-y-4 -z-10" />
             </motion.div>
             
