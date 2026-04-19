@@ -38,13 +38,13 @@ export default function Preloader() {
 
     const timeout = setTimeout(() => {
       setIndex(prev => (prev + 1) % greetings.length)
-    }, index === 0 ? 1000 : 250) // More readable pace
+    }, index === 0 ? 1200 : 400) // Solid first impression, then steady pace
 
     return () => clearTimeout(timeout)
   }, [index, loading])
 
   useEffect(() => {
-    const minDuration = 2000
+    const minDuration = 3500 // Increased for legibility
     const startTime = Date.now()
     
     const handleLoad = () => {
@@ -71,7 +71,7 @@ export default function Preloader() {
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            transition: { duration: 1.5, ease: [0.76, 0, 0.24, 1] as any, delay: 0.8 } 
+            transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] as any, delay: 0.8 } 
           }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-[#050505]"
         >
@@ -85,9 +85,9 @@ export default function Preloader() {
                   y: "-100%",
                   skewY: 10,
                   transition: { 
-                    duration: 1.2, 
+                    duration: 1.0, // Snappier curtain
                     ease: [0.76, 0, 0.24, 1] as any,
-                    delay: i * 0.08
+                    delay: i * 0.06
                   } 
                 }}
                 className="flex-1 bg-brand-accentSurface border-x border-brand-border/5"
@@ -102,7 +102,7 @@ export default function Preloader() {
                 initial={{ y: "100%", filter: "blur(15px)", opacity: 0 }}
                 animate={{ y: "0%", filter: "blur(0px)", opacity: 1 }}
                 exit={{ y: "-100%", filter: "blur(15px)", opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] as any }}
+                transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] as any }}
                 className="font-bebas text-[45px] sm:text-[90px] text-brand-white uppercase tracking-tighter"
               >
                 {greetings[index]}
