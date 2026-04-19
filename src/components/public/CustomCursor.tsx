@@ -41,13 +41,15 @@ export default function CustomCursor() {
         y: y,
         translateX: "-50%",
         translateY: "-50%",
+        willChange: "transform",
       }}
     >
       <motion.div
         animate={{
           scale: isHovered ? 2.5 : 1,
-          backgroundColor: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 1)",
+          backgroundColor: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0)",
         }}
+        transition={{ type: "spring", damping: 30, stiffness: 200 }}
         className="w-full h-full rounded-full border border-white"
       />
     </motion.div>

@@ -4,8 +4,13 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 
 export default async function FeaturedProducts() {
-  const session = await getServerSession(authOptions)
-  const isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
+  let isReseller = false;
+  try {
+    const session = await getServerSession(authOptions)
+    isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
+  } catch (error) {
+    console.error("Auth session fetch failed in FeaturedProducts", error);
+  }
 
   const products = [
     { 
@@ -53,7 +58,7 @@ export default async function FeaturedProducts() {
       
       {/* Scrollable Container with Peek Effect */}
       <div className="flex w-full overflow-x-auto overflow-y-hidden gap-6 px-6 md:px-[5%] scroll-smooth hide-scrollbar snap-x snap-mandatory">
-        {products.map((product) => {
+        {products.map((product, i) => {
           const imageUrls = product.images ? JSON.parse(product.images) : []
           const image = imageUrls[0] || 'https://via.placeholder.com/600x800'
           
@@ -65,6 +70,7 @@ export default async function FeaturedProducts() {
                   src={image} 
                   alt={product.name} 
                   fill
+                  priority={i === 0}
                   className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" 
                   sizes="(max-width: 768px) 75vw, (max-width: 1200px) 420px, 420px"
                 />

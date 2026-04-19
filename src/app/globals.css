@@ -41,30 +41,51 @@
   100% { transform: scale(1.9); opacity: 0; }
 }
 
+/* Lenis Smooth Scroll Stability */
+html.lenis {
+ scroll-behavior: auto !important;
+ height: auto;
+}
+
+.lenis.lenis-smooth {
+ scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+ overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+ overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+ pointer-events: none;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter);
+ background: var(--background);
+ color: var(--foreground);
+ font-family: var(--font-inter);
+ overscroll-behavior: none;
 }
 
 /* Base utility classes */
 .wide {
-  @apply max-w-[1440px] mx-auto px-6 xl:px-20;
+ @apply max-w-[1440px] mx-auto px-6 xl:px-20;
 }
 .default-container {
-  @apply max-w-[1200px] mx-auto px-6 lg:px-10;
+ @apply max-w-[1200px] mx-auto px-6 lg:px-10;
 }
 .narrow {
-  @apply max-w-[720px] mx-auto px-6;
+ @apply max-w-[720px] mx-auto px-6;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar */
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+ display: none;
 }
-
-/* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+ -ms-overflow-style: none;
+ scrollbar-width: none;
 }
