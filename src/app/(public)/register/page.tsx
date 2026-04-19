@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
   const slideVariants = {
     hidden: { opacity: 0, x: 40 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
     exit: { opacity: 0, x: -40, transition: { duration: 0.25 } }
   }
 
