@@ -20,7 +20,7 @@ export default function AdminSettings() {
             <label className="font-inter font-medium text-[11px] uppercase tracking-widest text-brand-muted">WhatsApp Number (inc. Country Code)</label>
             <input 
               type="text" 
-              defaultValue="919876543210"
+              defaultValue="917669932444"
               className="bg-brand-black border border-brand-border p-3 text-white text-sm outline-none focus:border-brand-accent w-full"
             />
           </div>

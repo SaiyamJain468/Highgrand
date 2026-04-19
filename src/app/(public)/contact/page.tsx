@@ -3,7 +3,7 @@
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react"
 
 export default function ContactPage() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
   
   return (
     <div className="bg-brand-black min-h-screen pt-32 pb-24">
@@ -24,8 +24,8 @@ export default function ContactPage() {
                 <h4 className="font-inter font-semibold text-[13px] text-brand-white uppercase tracking-widest mb-2">Factory Location</h4>
                 <p className="font-inter text-[14px] text-brand-muted leading-relaxed">
                   Highgrand Manufacturing<br/>
-                  Phase 1, Okhla Industrial Area<br/>
-                  New Delhi, 110020, India
+                  IX/6358, Netaji Gali, Gandhi Nagar<br/>
+                  Seelampur, New Delhi, Delhi, 110031
                 </p>
               </div>
             </div>
@@ -37,8 +37,9 @@ export default function ContactPage() {
               <div>
                 <h4 className="font-inter font-semibold text-[13px] text-brand-white uppercase tracking-widest mb-2">Call Us</h4>
                 <p className="font-inter text-[14px] text-brand-muted leading-relaxed">
-                  +91 98765 43210<br/>
-                  <span className="text-[12px]">MON-SAT (10 AM - 7 PM)</span>
+                  +91 7669932444<br/>
+                  <span className="text-[12px]">TUE-FRI: 08:30 - 20:00</span><br/>
+                  <span className="text-[12px]">SAT-SUN: 09:30 - 21:30</span>
                 </p>
               </div>
             </div>
@@ -50,7 +51,7 @@ export default function ContactPage() {
               <div>
                 <h4 className="font-inter font-semibold text-[13px] text-brand-white uppercase tracking-widest mb-2">Email</h4>
                 <p className="font-inter text-[14px] text-brand-muted leading-relaxed">
-                  wholesale@highgrand.in<br/>
+                  admin@highgrand.com<br/>
                   <span className="text-[12px]">We respond within 24 hours</span>
                 </p>
               </div>

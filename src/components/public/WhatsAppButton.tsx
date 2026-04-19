@@ -3,7 +3,7 @@
 import { MessageCircle } from "lucide-react"
 
 export default function WhatsAppButton() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
+  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
   const message = encodeURIComponent("Hi, I'm interested in partnering with Highgrand.")
 
   return (

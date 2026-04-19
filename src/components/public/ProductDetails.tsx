@@ -15,7 +15,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
   const [washCareOpen, setWashCareOpen] = useState(false)
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false)
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
   const whatsappMsg = encodeURIComponent(`Hi, I'm interested in ${product.name}.`)
 
   return (

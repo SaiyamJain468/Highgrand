@@ -15,6 +15,7 @@ const heroWord = {
 
 export default function Hero() {
   const headline = "QUALITY THAT SELLS ITSELF".split(" ")
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
 
   return (
     <section className="relative h-screen min-h-[640px] bg-brand-black flex items-center justify-center overflow-hidden">
