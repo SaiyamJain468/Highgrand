@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter, Bebas_Neue, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import Preloader from '@/components/public/Preloader';
+import { CustomCursor, GrainOverlay, BackgroundAura } from '@/components/public/CinematicEffects';
+import SmoothScroll from '@/components/public/SmoothScroll';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['300', '400', '500', '600'] });
 const bebas = Bebas_Neue({ subsets: ['latin'], variable: '--font-bebas', weight: '400' });
@@ -18,8 +21,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${bebas.variable} ${playfair.variable} bg-brand-black text-brand-white font-inter overflow-x-hidden antialiased`}>
-        {children}
+      <body className={`${inter.variable} ${bebas.variable} ${playfair.variable} bg-brand-black text-brand-white font-inter overflow-x-hidden antialiased cursor-none`}>
+        <Preloader />
+        <CustomCursor />
+        <GrainOverlay />
+        <BackgroundAura />
+        <SmoothScroll>
+          <main className="relative z-0">
+            {children}
+          </main>
+        </SmoothScroll>
       </body>
     </html>
   );
