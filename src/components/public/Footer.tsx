@@ -11,10 +11,10 @@ export default function Footer() {
           </p>
           <div className="flex gap-4">
             {/* Social Icons Placeholder */}
-            <div className="w-8 h-8 rounded-full border border-brand-border flex items-center justify-center text-brand-muted hover:text-brand-white hover:border-brand-white transition-colors cursor-pointer">
+            <a href="https://www.instagram.com/highgrand__/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-brand-border flex items-center justify-center text-brand-muted hover:text-brand-white hover:border-brand-white transition-colors cursor-pointer">
               {/* Instagram */}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            </div>
+            </a>
           </div>
         </div>
 
