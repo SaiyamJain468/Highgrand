@@ -20,7 +20,19 @@ export default function HomeSections() {
             <p className="font-inter text-brand-muted mt-4 text-[16px] max-w-[500px] mx-auto">We eliminate the friction of apparel manufacturing so you can focus entirely on building your brand.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: { staggerChildren: 0.15 } 
+              }
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10"
+          >
             {[
               { icon: <Truck size={32} />, title: 'No Minimum Order', desc: 'Order 1 piece or 10,000 pieces. We support your brand\'s growth at every stage without massive inventory pressure.' },
               { icon: <Factory size={32} />, title: 'Delhi Factory Direct', desc: 'Skip the middlemen. Get premium manufacturing quality directly from our established New Delhi facility.' },
@@ -28,10 +40,14 @@ export default function HomeSections() {
             ].map((feature, idx) => (
               <motion.div 
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.2 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any } 
+                  }
+                }}
                 whileHover={{ y: -8 }}
                 className="flex flex-col bg-[#0A0A0A] border border-brand-border/50 hover:border-brand-accent/30 rounded-[2px] p-10 lg:p-12 transition-all duration-300 relative group overflow-hidden shadow-xl"
               >
@@ -48,7 +64,7 @@ export default function HomeSections() {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 

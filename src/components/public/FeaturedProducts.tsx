@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import AnimatedList from "./AnimatedList"
 
 export default async function FeaturedProducts() {
   let isReseller = false;
@@ -56,14 +57,19 @@ export default async function FeaturedProducts() {
         </div>
       </div>
       
-      {/* Scrollable Container with Peek Effect */}
-      <div className="flex w-full overflow-x-auto overflow-y-hidden gap-6 px-6 md:px-[5%] scroll-smooth hide-scrollbar snap-x snap-mandatory">
+      {/* Animated Scrollable Container with Peek Effect */}
+      <AnimatedList className="flex w-full overflow-x-auto overflow-y-hidden gap-6 px-6 md:px-[5%] scroll-smooth hide-scrollbar snap-x snap-mandatory pb-10">
         {products.map((product, i) => {
-          const imageUrls = product.images ? JSON.parse(product.images) : []
-          const image = imageUrls[0] || 'https://via.placeholder.com/600x800'
+          let image = 'https://via.placeholder.com/600x800'
+          try {
+            const imageUrls = product.images ? JSON.parse(product.images) : []
+            if (imageUrls.length > 0) image = imageUrls[0]
+          } catch (e) {
+            console.error("Failed to parse product images", e)
+          }
           
           return (
-            <Link key={product.id} href={`/products/${product.slug}`} className="group min-w-[75vw] sm:min-w-[360px] md:min-w-[420px] snap-start block bg-[#080808] border border-brand-border/30 rounded-[2px] transition-all duration-500 hover:border-brand-accent/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative overflow-hidden">
+            <Link key={product.id} href={`/products/${product.slug}`} className="group min-w-[75vw] sm:min-w-[360px] md:min-w-[420px] snap-start block bg-[#080808] border border-brand-border/30 rounded-[2px] transition-all duration-500 hover:border-brand-accent/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative overflow-hidden h-full">
               <div className="aspect-[4/5] overflow-hidden relative bg-brand-surface2">
                 <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <Image 
@@ -121,7 +127,7 @@ export default async function FeaturedProducts() {
             </Link>
           )
         })}
-      </div>
+      </AnimatedList>
     </section>
   )
 }

@@ -31,27 +31,31 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen min-h-[640px] bg-brand-black flex items-center justify-center overflow-hidden">
-      {/* Cinematic Ken Burns Background */}
+      {/* Cinematic Ken Burns Background with Mouse Parallax */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div 
           className="absolute inset-0 bg-brand-black" 
           animate={{ background: ["#050505", "#0a0a0a", "#050505"] }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
-        <motion.img 
-          initial={{ scale: 1.0 }}
-          animate={{ scale: 1.15 }}
-          transition={{ duration: 30, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
-          src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop" 
-          alt="Highgrand Factory"
-          className="w-full h-full object-cover opacity-25 mix-blend-luminosity"
-        />
+        <motion.div
+           className="absolute inset-0"
+           initial={{ scale: 1.0 }}
+           animate={{ scale: 1.05 }}
+           transition={{ duration: 20, repeat: Infinity, repeatType: "mirror" }}
+        >
+          <motion.img 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.25 }}
+            transition={{ duration: 2 }}
+            src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop" 
+            alt="Highgrand Factory"
+            className="w-full h-full object-cover mix-blend-luminosity"
+          />
+        </motion.div>
         
         {/* Vignette Overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] opacity-90 mix-blend-multiply" />
-        
-        {/* Grain Noise Overlay */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E")' }} />
       </div>
 
       {/* Content */}
@@ -59,14 +63,14 @@ export default function Hero() {
         <motion.p 
           initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-inter font-medium text-[10px] md:text-[12px] text-brand-accent uppercase tracking-[0.3em] mb-4 md:mb-6 drop-shadow-[0_0_10px_rgba(20,169,110,0.4)]"
+          transition={{ duration: 1.2, delay: 0.5 }}
+          className="font-inter font-medium text-[10px] md:text-[12px] text-brand-accent uppercase tracking-[0.3em] mb-4 md:mb-6"
         >
           DELHI'S FACTORY DIRECT MANUFACTURER
         </motion.p>
 
         <h1 className="font-bebas text-[42px] sm:text-[96px] md:text-[120px] lg:text-[140px] text-brand-white leading-[0.85] tracking-tight mb-8">
-          <TextReveal delay={0.4} staggerChildren={0.03}>
+          <TextReveal delay={0.8} staggerChildren={0.06}>
             {headline}
           </TextReveal>
         </h1>

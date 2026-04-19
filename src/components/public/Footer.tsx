@@ -33,27 +33,27 @@ export default function Footer() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-12 mb-20"
+          className="grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-16 md:gap-12 mb-20"
         >
-          <motion.div variants={item} className="md:col-span-4">
-            <div className="font-bebas text-[48px] text-brand-white mb-6 tracking-tight">HIGH<span className="text-brand-accent">GRAND</span></div>
-            <p className="font-inter text-brand-muted text-[15px] leading-relaxed mb-8 max-w-[320px]">
+          <motion.div variants={item} className="col-span-2 md:col-span-4">
+            <div className="font-bebas text-[36px] md:text-[48px] text-brand-white mb-6 tracking-tight">HIGH<span className="text-brand-accent">GRAND</span></div>
+            <p className="font-inter text-brand-muted text-[14px] md:text-[15px] leading-relaxed mb-8 max-w-[320px]">
               Delhi's premium industrial-scale manufacturer. Crafting heavyweight blanks and luxury streetwear for the next generation of Indian brands.
             </p>
             <div className="flex gap-6">
               {[
                 { name: "Instagram", url: "https://www.instagram.com/highgrand__/", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> }
               ].map((social, i) => (
-                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-brand-border flex items-center justify-center text-brand-muted hover:text-brand-accent hover:border-brand-accent transition-all duration-500 group">
+                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-brand-border flex items-center justify-center text-brand-muted hover:text-brand-accent hover:border-brand-accent transition-all duration-500 group">
                   {social.icon}
                 </a>
               ))}
             </div>
           </motion.div>
 
-          <motion.div variants={item} className="md:col-span-2">
-            <h4 className="font-bebas text-[20px] text-brand-white uppercase tracking-widest mb-8">Navigation</h4>
-            <ul className="flex flex-col gap-4">
+          <motion.div variants={item} className="col-span-1 md:col-span-2">
+            <h4 className="font-bebas text-[18px] md:text-[20px] text-brand-white uppercase tracking-widest mb-6 md:mb-8">Navigation</h4>
+            <ul className="flex flex-col gap-3 md:gap-4">
               {['Home', 'Products', 'About', 'Contact'].map((link) => (
                 <li key={link}>
                   <Link href={link === 'Home' ? '/' : `/${link.toLowerCase()}`} className="text-brand-muted hover:text-brand-accent text-sm font-medium transition-all flex items-center gap-2 group">
@@ -65,25 +65,26 @@ export default function Footer() {
             </ul>
           </motion.div>
 
-          <motion.div variants={item} className="md:col-span-3">
-            <h4 className="font-bebas text-[20px] text-brand-white uppercase tracking-widest mb-8">Supply Chain</h4>
-            <ul className="flex flex-col gap-4">
+          <motion.div variants={item} className="col-span-1 md:col-span-3">
+            <h4 className="font-bebas text-[18px] md:text-[20px] text-brand-white uppercase tracking-widest mb-6 md:mb-8">Supply Chain</h4>
+            <ul className="flex flex-col gap-3 md:gap-4">
               <li><Link href="/products" className="text-brand-muted hover:text-brand-accent text-sm transition-colors">Premium Oversized</Link></li>
-              <li><Link href="/products" className="text-brand-muted hover:text-brand-accent text-sm transition-colors">Acid Wash Series</Link></li>
-              <li><Link href="/products" className="text-brand-muted hover:text-brand-accent text-sm transition-colors">Boxy Heavyweight</Link></li>
-              <li><Link href="/register" className="text-brand-accent hover:text-brand-white text-sm font-bold uppercase tracking-widest mt-2 block animate-pulse">Join Reseller Network</Link></li>
+              <li><Link href="/products" className="text-brand-muted hover:text-brand-accent text-sm transition-colors">Acid Wash</Link></li>
+              <li><Link href="/products" className="text-brand-muted hover:text-brand-accent text-sm transition-colors">Boxy Heavy</Link></li>
             </ul>
           </motion.div>
 
-          <motion.div variants={item} className="md:col-span-3">
-            <h4 className="font-bebas text-[20px] text-brand-white uppercase tracking-widest mb-6 md:mb-8">Industrial HQ</h4>
-            <p className="font-inter text-brand-muted text-sm leading-relaxed mb-6">
-              IX/6358, Netaji Gali<br/>
-              Gandhi Nagar, Delhi 110031
-            </p>
-            <div className="bg-brand-surface1 border border-brand-border p-4 md:p-5">
-              <span className="block font-bebas text-[11px] text-brand-accent uppercase tracking-[0.2em] mb-2">Coordinates</span>
-              <span className="block font-inter text-[12px] md:text-[13px] text-brand-white tabular-nums">28.6631° N, 77.2721° E</span>
+          <motion.div variants={item} className="col-span-2 md:col-span-3">
+            <h4 className="font-bebas text-[18px] md:text-[20px] text-brand-white uppercase tracking-widest mb-4 md:mb-8">Industrial HQ</h4>
+            <div className="flex flex-col sm:flex-row md:flex-col gap-6 md:gap-0">
+              <p className="font-inter text-brand-muted text-sm leading-relaxed mb-6">
+                IX/6358, Netaji Gali<br/>
+                Gandhi Nagar, Delhi 110031
+              </p>
+              <div className="bg-brand-surface1 border border-brand-border p-4 md:p-5 flex-1 md:flex-none">
+                <span className="block font-bebas text-[11px] text-brand-accent uppercase tracking-[0.2em] mb-2">Coordinates</span>
+                <span className="block font-inter text-[12px] md:text-[13px] text-brand-white tabular-nums">28.6631° N, 77.2721° E</span>
+              </div>
             </div>
           </motion.div>
         </motion.div>

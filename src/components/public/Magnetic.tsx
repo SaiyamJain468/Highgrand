@@ -29,7 +29,7 @@ export default function Magnetic({ children }: { children: ReactElement }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={reset}
       animate={{ x, y }}
-      transition={{ type: "spring" as const, stiffness: 150, damping: 20, mass: 0.1 }}
+      transition={{ type: "spring" as const, stiffness: 120, damping: 25, mass: 0.15 }}
     >
       {children}
     </motion.div>

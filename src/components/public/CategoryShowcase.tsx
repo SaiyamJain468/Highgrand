@@ -59,44 +59,42 @@ export default function CategoryShowcase() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
         >
           {categories.map((category) => (
-            <motion.a 
+            <motion.div
               key={category.id}
-              href={`/category/${category.slug}`}
               variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className="group block relative aspect-[16/10] md:aspect-[3/4] overflow-hidden bg-brand-black border border-brand-border hover:border-brand-accent/50 transition-colors duration-500 rounded-[2px]"
             >
-              <Image 
-                src={category.image} 
-                alt={category.name}
-                fill
-                className="object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80" />
-              
-              <div className="absolute bottom-0 left-0 w-full p-6 md:p-10">
-                <div className="flex items-center gap-3 mb-4">
-                   <div className="h-[1px] w-8 bg-brand-accent transform origin-left transition-all duration-500 group-hover:w-12"></div>
-                   <span className="font-inter text-[10px] md:text-[11px] font-bold text-brand-accent uppercase tracking-widest">{category.badge}</span>
+              <Link href={`/products?category=${category.slug}`} className="group block relative aspect-[4/5] overflow-hidden bg-brand-surface1 border border-brand-border hover:border-brand-accent/50 transition-all duration-700 rounded-[2px] shadow-2xl">
+                <Image 
+                  src={category.image} 
+                  alt={category.name}
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80" />
+                
+                <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="flex items-center gap-3 mb-4">
+                     <div className="h-[1px] w-8 bg-brand-accent transform origin-left transition-all duration-500 group-hover:w-12"></div>
+                     <span className="font-bebas text-[14px] text-brand-accent tracking-[0.2em] uppercase">{category.badge}</span>
+                  </div>
+                  <h3 className="font-bebas text-[36px] md:text-[52px] text-brand-white leading-none mb-4 uppercase">{category.name}</h3>
+                  <p className="font-inter text-[12px] md:text-[14px] text-brand-muted opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center gap-2">
+                    VIEW INDUSTRIAL COLLECTION
+                    <svg className="w-4 h-4 transform transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </p>
                 </div>
-                <h3 className="font-bebas text-[36px] md:text-[48px] text-brand-white leading-none mb-2">{category.name}</h3>
-                <p className="font-inter text-[12px] md:text-[13px] text-brand-muted flex items-center gap-2">
-                  Shop Collection
-                  <svg className="w-4 h-4 transform transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </p>
-              </div>
 
-              <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                <div className="px-3 py-1 md:px-4 md:py-1.5 backdrop-blur-md rounded-full border border-brand-success/30 bg-brand-success/10 text-brand-success font-inter text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
-                  Verified
+                <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                  <div className="px-3 py-1 bg-brand-black/40 backdrop-blur-md border border-brand-border/50 text-brand-white/50 font-inter text-[9px] font-bold uppercase tracking-widest group-hover:text-brand-accent transition-colors">
+                    FACTORY DIRECT
+                  </div>
                 </div>
-              </div>
-            </motion.a>
+              </Link>
+            </motion.div>
           ))}
         </motion.div>
       </div>
