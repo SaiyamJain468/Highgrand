@@ -29,7 +29,7 @@ export default function Navbar() {
 
   const mobileMenuVariants = {
     hidden: { opacity: 0, y: "-100%" },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
     exit: { opacity: 0, y: "-100%", transition: { duration: 0.25 } }
   }
 
