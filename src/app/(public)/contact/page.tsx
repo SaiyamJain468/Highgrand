@@ -19,19 +19,16 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-20"
+            className="mb-20 text-center"
           >
-            <div className="flex items-center gap-4 mb-6">
-              <span className="flex items-center gap-2 px-3 py-1 bg-brand-success/10 border border-brand-success/20 text-brand-success font-inter text-[10px] font-bold uppercase tracking-widest">
-                <div className="w-2 h-2 rounded-full bg-brand-success shadow-[0_0_10px_rgba(20,200,80,0.8)] animate-pulse" />
-                Factory Support: Online
-              </span>
-              <p className="font-inter font-semibold text-[13px] text-brand-accent uppercase tracking-[0.2em]">Contact Engineering</p>
-            </div>
-            <h1 className="font-bebas text-[72px] md:text-[140px] text-brand-white uppercase leading-[0.8] tracking-tight mb-8">
-              <TextReveal staggerChildren={0.03}>LET'S BUILD</TextReveal><br/>
-              <span className="text-brand-muted">YOUR LEGACY.</span>
+            <p className="font-inter font-semibold text-[13px] text-brand-accent uppercase tracking-[0.2em] mb-6 shadow-sm">Partner With Us</p>
+            <h1 className="font-bebas text-[48px] sm:text-[72px] md:text-[140px] text-brand-white uppercase leading-[0.8] tracking-tight mb-8">
+              <TextReveal staggerChildren={0.03}>LET'S BUILD YOUR</TextReveal><br/>
+              <span className="text-brand-accent">LEGACY.</span>
             </h1>
+            <p className="font-inter text-[16px] md:text-[22px] text-brand-muted max-w-[700px] mx-auto leading-relaxed px-4">
+              India's most trusted manufacturing infrastructure. Get factory direct pricing and scale your clothing brand with industrial precision.
+            </p>
           </motion.div>
 
           <div className="flex flex-col lg:flex-row gap-20 items-start">
@@ -63,15 +60,25 @@ export default function ContactPage() {
               ))}
 
               {/* Trust Bar */}
-              <div className="pt-12 border-t border-brand-border/30">
-                <p className="font-inter text-[11px] text-brand-muted uppercase tracking-[0.2em] mb-8">Industrial Verification</p>
-                <div className="flex flex-wrap gap-8 opacity-40 grayscale group-hover:grayscale-0 transition-all">
-                  {['GST Verified', 'ISO 9001:2015', 'MSME Certified'].map(badge => (
-                    <div key={badge} className="flex items-center gap-3 border border-brand-border/50 px-4 py-2">
-                       <ShieldCheck size={16} className="text-brand-accent"/>
-                       <span className="font-inter text-[10px] font-bold text-brand-white uppercase">{badge}</span>
-                    </div>
-                  ))}
+              <div className="pt-12 border-t border-brand-border/30 w-full">
+                <span className="block font-inter text-[11px] font-bold text-brand-muted uppercase tracking-[0.3em] mb-8">Industrial Verification</span>
+                <div className="grid grid-cols-2 gap-6 md:gap-8 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+                  <div className="flex flex-col items-center lg:items-start gap-3">
+                    <ShieldCheck className="w-8 h-8 text-brand-accent" />
+                    <span className="font-bebas text-[14px] text-brand-white tracking-widest">GST VERIFIED</span>
+                  </div>
+                  <div className="flex flex-col items-center lg:items-start gap-3">
+                    <ShieldCheck className="w-8 h-8 text-brand-accent" />
+                    <span className="font-bebas text-[14px] text-brand-white tracking-widest">ISO 9001:2015</span>
+                  </div>
+                  <div className="flex flex-col items-center lg:items-start gap-3">
+                    <ShieldCheck className="w-8 h-8 text-brand-accent" />
+                    <span className="font-bebas text-[14px] text-brand-white tracking-widest">MSME REGISTERED</span>
+                  </div>
+                  <div className="flex flex-col items-center lg:items-start gap-3">
+                    <ShieldCheck className="w-8 h-8 text-brand-accent" />
+                    <span className="font-bebas text-[14px] text-brand-white tracking-widest">OEKO-TEX</span>
+                  </div>
                 </div>
               </div>
             </div>

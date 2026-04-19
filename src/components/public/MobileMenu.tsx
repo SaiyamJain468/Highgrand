@@ -127,20 +127,35 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="relative z-10 p-8 border-t border-brand-border/30"
+            className="relative z-10 p-8 border-t border-brand-border/30 bg-brand-black"
           >
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="font-inter text-[10px] text-brand-muted uppercase tracking-[0.2em] mb-4">India · Factory Direct</p>
-                <div className="flex gap-4">
-                  {['Instagram', 'WhatsApp'].map(social => (
-                    <span key={social} className="font-inter text-[12px] text-brand-white/60 hover:text-brand-accent cursor-pointer transition-colors uppercase tracking-widest">{social}</span>
-                  ))}
+            <div className="flex flex-col gap-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="block font-bebas text-[11px] text-brand-accent tracking-[0.2em] mb-2">Manufacturing HQ</span>
+                  <p className="font-inter text-[12px] text-brand-white/80 leading-relaxed">
+                    Gandhi Nagar, New Delhi<br/>
+                    Coordinates: 28.66°N, 77.27°E
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="block font-bebas text-[11px] text-brand-accent tracking-[0.2em] mb-2">Local Time</span>
+                  <span className="font-inter text-[14px] text-brand-white tabular-nums">
+                    {new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })} IST
+                  </span>
                 </div>
               </div>
-              <Link href="/register" onClick={onClose} className="font-bebas text-[20px] text-brand-white border-b border-brand-accent">
-                Wholesale Portal 
-              </Link>
+              
+              <div className="flex justify-between items-end pt-4 border-t border-brand-border/10">
+                <div className="flex gap-4">
+                  {['Instagram', 'WhatsApp'].map(social => (
+                    <span key={social} className="font-inter text-[11px] text-brand-muted hover:text-brand-accent cursor-pointer transition-colors uppercase tracking-[0.2em]">{social}</span>
+                  ))}
+                </div>
+                <Link href="/register" onClick={onClose} className="font-bebas text-[18px] text-brand-white border-b border-brand-accent pb-1">
+                  Wholesale Portal 
+                </Link>
+              </div>
             </div>
           </motion.div>
           

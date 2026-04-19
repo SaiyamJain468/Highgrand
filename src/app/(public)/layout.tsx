@@ -40,11 +40,11 @@ export default function PublicLayout({
 }) {
   return (
     <SmoothScroll>
-      <div className="flex flex-col min-h-screen relative">
+      <div className="flex flex-col min-h-screen relative overflow-x-hidden">
         <CustomCursor />
         <TopMarquee />
         <Navbar />
-        <main className="flex-1 relative z-10">
+        <main className="flex-1 relative z-10 overflow-x-hidden">
           {children}
         </main>
         <Footer />

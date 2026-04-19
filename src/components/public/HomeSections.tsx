@@ -38,11 +38,11 @@ export default function HomeSections() {
                 <div className="w-20 h-20 rounded-full bg-brand-black border border-brand-border/50 flex items-center justify-center text-brand-white group-hover:bg-brand-accent group-hover:text-brand-black transition-colors duration-300 mb-8 z-10 relative shadow-lg">
                   {feature.icon}
                 </div>
-                <h3 className="font-bebas text-[32px] text-brand-white uppercase mb-4 z-10 relative md:min-h-[70px] lg:min-h-0">{feature.title}</h3>
-                <p className="font-inter text-brand-muted text-[15px] leading-[1.8] z-10 relative">
+                <h3 className="font-bebas text-[28px] md:text-[32px] text-brand-white uppercase mb-4 z-10 relative md:min-h-[70px] lg:min-h-0">{feature.title}</h3>
+                <p className="font-inter text-brand-muted text-[14px] md:text-[15px] leading-[1.6] md:leading-[1.8] z-10 relative">
                   {feature.desc}
                 </p>
-                <div className="absolute top-0 right-0 p-8 text-brand-border/20 font-bebas text-[120px] leading-none pointer-events-none group-hover:text-brand-accent/5 transition-colors duration-500 rotate-12 -translate-y-8 translate-x-4">
+                <div className="absolute top-0 right-0 p-6 md:p-8 text-brand-border/20 font-bebas text-[80px] md:text-[120px] leading-none pointer-events-none group-hover:text-brand-accent/5 transition-colors duration-500 rotate-12 -translate-y-4 md:-translate-y-8 translate-x-2 md:translate-x-4">
                   {idx + 1}
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

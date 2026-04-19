@@ -25,7 +25,7 @@ export default function BrandMarquee() {
           {brands.map((brand, i) => (
             <div key={i} className="flex items-center gap-4 group">
               <div className="w-2 h-2 rounded-full bg-brand-accent/40 group-hover:bg-brand-accent transition-colors" />
-              <span className="font-bebas text-[24px] md:text-[32px] text-brand-muted/50 group-hover:text-brand-white transition-colors tracking-widest uppercase">
+              <span className="font-bebas text-[28px] md:text-[32px] text-brand-muted/70 group-hover:text-brand-white transition-colors tracking-widest uppercase">
                 {brand}
               </span>
             </div>

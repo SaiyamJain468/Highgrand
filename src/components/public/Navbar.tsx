@@ -31,16 +31,16 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 z-[60] transition-all duration-300 h-16 flex items-center ${
+        className={`fixed left-0 right-0 z-[60] transition-all duration-500 flex items-center ${
           scrolled || !isHome
-            ? "bg-brand-black/95 backdrop-blur-md border-b border-brand-border"
-            : "bg-transparent border-transparent"
+            ? "h-16 bg-brand-black/95 backdrop-blur-md border-b border-brand-border translate-y-0 shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+            : "h-20 bg-transparent border-transparent translate-y-0"
         }`}
-        style={{ top: scrolled ? 0 : 32 }}
+        style={{ top: isHome ? (scrolled ? 0 : 32) : 0 }}
       >
-        <div className="wide w-full flex justify-between items-center">
-          <Link href="/" className="font-bebas text-[26px] text-brand-white relative z-50">
-            HIGHGRAND
+        <div className="wide w-full flex justify-between items-center px-6 md:px-12">
+          <Link href="/" className="font-bebas text-[24px] md:text-[28px] text-brand-white relative z-50 tracking-tight hover:text-brand-accent transition-colors">
+            HIGH<span className="text-brand-accent">GRAND</span>
           </Link>
 
           {/* Desktop Links */}

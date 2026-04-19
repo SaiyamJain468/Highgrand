@@ -68,6 +68,9 @@ body {
  color: var(--foreground);
  font-family: var(--font-inter);
  overscroll-behavior: none;
+ overflow-x: hidden;
+ width: 100%;
+ position: relative;
 }
 
 /* Base utility classes */

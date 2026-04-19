@@ -21,9 +21,9 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-brand-black border-t border-brand-border pt-24 pb-12 relative overflow-hidden">
+    <footer className="bg-brand-black border-t border-brand-border pt-16 md:pt-24 pb-12 relative overflow-hidden">
       {/* Industrial Watermark */}
-      <div className="absolute -bottom-10 -left-10 font-bebas text-[200px] md:text-[300px] text-brand-white/5 leading-none select-none pointer-events-none">
+      <div className="absolute -bottom-6 md:-bottom-10 -left-6 md:-left-10 font-bebas text-[100px] sm:text-[150px] md:text-[300px] text-brand-white/5 leading-none select-none pointer-events-none">
         HIGHGRAND
       </div>
 
@@ -76,14 +76,14 @@ export default function Footer() {
           </motion.div>
 
           <motion.div variants={item} className="md:col-span-3">
-            <h4 className="font-bebas text-[20px] text-brand-white uppercase tracking-widest mb-8">Industrial HQ</h4>
+            <h4 className="font-bebas text-[20px] text-brand-white uppercase tracking-widest mb-6 md:mb-8">Industrial HQ</h4>
             <p className="font-inter text-brand-muted text-sm leading-relaxed mb-6">
               IX/6358, Netaji Gali<br/>
               Gandhi Nagar, Delhi 110031
             </p>
-            <div className="bg-brand-surface1 border border-brand-border p-5">
+            <div className="bg-brand-surface1 border border-brand-border p-4 md:p-5">
               <span className="block font-bebas text-[11px] text-brand-accent uppercase tracking-[0.2em] mb-2">Coordinates</span>
-              <span className="block font-inter text-[13px] text-brand-white tabular-nums">28.6631° N, 77.2721° E</span>
+              <span className="block font-inter text-[12px] md:text-[13px] text-brand-white tabular-nums">28.6631° N, 77.2721° E</span>
             </div>
           </motion.div>
         </motion.div>
