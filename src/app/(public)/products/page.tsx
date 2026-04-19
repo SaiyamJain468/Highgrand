@@ -5,12 +5,13 @@ import { authOptions } from "@/lib/auth"
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { category?: string }
+  searchParams: Promise<{ category?: string }>
 }) {
   const session = await getServerSession(authOptions)
   const isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
 
-  const activeCategoryParam = searchParams.category || 'all'
+  const searchParamsResolved = await searchParams
+  const activeCategoryParam = searchParamsResolved.category || 'all'
 
   const categories = [
     { id: '1', name: 'Oversized T-Shirts', slug: 'oversized-tshirts' },

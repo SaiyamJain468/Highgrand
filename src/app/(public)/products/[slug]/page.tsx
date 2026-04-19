@@ -3,8 +3,9 @@ import { authOptions } from "@/lib/auth"
 import ProductDetails from "@/components/public/ProductDetails"
 // import prisma from "@/lib/prisma"
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const session = await getServerSession(authOptions)
+  const paramsResolved = await params
   const isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
   const isPending = session?.user?.role === "RESELLER" && session?.user?.status === "PENDING"
 
