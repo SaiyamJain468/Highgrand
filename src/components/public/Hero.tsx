@@ -78,7 +78,7 @@ export default function Hero() {
             View Collection
           </Link>
           <a  
-            href="https://wa.me/919876543210"
+            href={`https://wa.me/${whatsappNumber}`}
             className="bg-brand-whatsapp text-brand-black px-9 py-3.5 font-inter font-semibold text-[13px] uppercase tracking-[0.1em] flex items-center justify-center gap-2 hover:bg-brand-success hover:text-brand-white transition-colors duration-180"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
