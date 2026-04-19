@@ -17,7 +17,8 @@ export const authOptions: NextAuthOptions = {
         }
         
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
+          include: { resellerProfile: true }
         })
         
         if (!user) {
@@ -36,6 +37,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           role: user.role,
           status: user.status,
+          businessName: user.resellerProfile?.businessName || null
         }
       }
     })
@@ -49,6 +51,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.role = user.role
         token.status = user.status
+        token.businessName = user.businessName
       }
       return token
     },
@@ -57,6 +60,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string
         session.user.role = token.role as string
         session.user.status = token.status as string
+        session.user.businessName = token.businessName as string | null | undefined
       }
       return session
     }
