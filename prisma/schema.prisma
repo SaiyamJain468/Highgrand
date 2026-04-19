@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  phone         String?
+  passwordHash  String
+  role          Role      @default(RESELLER)
+  status        UserStatus @default(PENDING)   // PENDING | APPROVED | REJECTED
+  resellerProfile ResellerProfile?
+  createdAt     DateTime  @default(now())
+}
+
+enum Role {
+  ADMIN
+  RESELLER
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ResellerProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  businessName    String
+  businessType    String   // SHOP / ONLINE / BOTH
+  city            String
+  state           String
+  monthlyVolume   String   // "50-100" | "100-500" | "500+"
+  adminNotes      String?
+  approvedAt      DateTime?
+  rejectedAt      DateTime?
+}
+
+model Category {
+  id           String    @id @default(cuid())
+  name         String
+  slug         String    @unique
+  description  String?
+  image        String?
+  status       CatStatus @default(COMING_SOON)  // ACTIVE | COMING_SOON | HIDDEN
+  displayOrder Int       @default(0)
+  products     Product[]
+  createdAt    DateTime  @default(now())
+}
+
+enum CatStatus {
+  ACTIVE
+  COMING_SOON
+  HIDDEN
+}
+
+model Product {
+  id               String    @id @default(cuid())
+  name             String
+  slug             String    @unique
+  shortDescription String
+  longDescription  String    @db.LongText
+  categoryId       String
+  category         Category  @relation(fields: [categoryId], references: [id])
+  images           String    @db.LongText  // JSON array of Cloudinary URLs
+  mrpLabel         String    // "₹850/piece" — shown to public
+  wholesaleLabel   String    // "₹420/piece" — shown to approved resellers only
+  moqNote          String    // "No minimum order" or "50 pcs minimum"
+  gsm              Int
+  composition      String    // "100% Super Combed Cotton"
+  weave            String    // "Single Jersey"
+  finish           String    // "Bio-washed"
+  washCare         String    @db.Text
+  sizes            String    // JSON: ["XS","S","M","L","XL","XXL","3XL"]
+  colors           String    @db.LongText  // JSON array of {name, hex, image}
+  tags             String?   // JSON array of strings
+  isActive         Boolean   @default(true)
+  isFeatured       Boolean   @default(false)
+  displayOrder     Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String?
+  phone       String
+  message     String        @db.Text
+  productId   String?
+  productName String?
+  status      InquiryStatus @default(NEW)  // NEW | SEEN | RESPONDED
+  createdAt   DateTime      @default(now())
+}
+
+enum InquiryStatus {
+  NEW
+  SEEN
+  RESPONDED
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  name         String
+  businessName String
+  city         String
+  avatarUrl    String?
+  content      String   @db.Text
+  rating       Int      @default(5)
+  isActive     Boolean  @default(true)
+  displayOrder Int      @default(0)
+}
+
+model Banner {
+  id           String   @id @default(cuid())
+  image        String
+  mobileImage  String?
+  link         String?
+  altText      String
+  isActive     Boolean  @default(true)
+  displayOrder Int      @default(0)
+}
+
+model SiteSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.LongText
+}
