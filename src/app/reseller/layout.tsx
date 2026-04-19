@@ -16,7 +16,7 @@ export default async function ResellerLayout({ children }: { children: React.Rea
       <aside className="w-64 border-r border-brand-border bg-brand-surface1 hidden md:flex flex-col">
         <div className="p-6">
           <p className="font-inter text-[11px] font-semibold text-brand-muted uppercase tracking-widest mb-1">Signed in as</p>
-          <p className="font-bebas text-[20px] text-brand-white truncate">{session.user.businessName || session.user.name}</p>
+          <p className="font-bebas text-[20px] text-brand-white truncate">{((session?.user) as any)?.businessName || session?.user?.name}</p>
           <span className="inline-block mt-2 bg-[#0D2010] text-brand-success text-[10px] px-2 py-1 font-inter font-semibold uppercase tracking-wider">Approved Reseller</span>
         </div>
         
