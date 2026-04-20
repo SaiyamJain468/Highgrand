@@ -33,7 +33,10 @@ export default function SkewSection({ children }: { children: ReactNode }) {
   return (
     <motion.div
       ref={ref}
-      style={{ skewY: skewSpring }}
+      style={{ 
+        skewY: isMobile ? 0 : skewSpring,
+        willChange: "transform" 
+      }}
       className="origin-center"
     >
       {children}

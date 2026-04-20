@@ -92,7 +92,7 @@ export function BackgroundAura() {
   }, [mouseX, mouseY])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden hidden md:block">
       <motion.div
         style={{
           left: auraX,

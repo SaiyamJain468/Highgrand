@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${bebas.variable} ${playfair.variable} bg-brand-black text-brand-white font-inter overflow-x-hidden antialiased cursor-none`}>
+      <body className={`${inter.variable} ${bebas.variable} ${playfair.variable} bg-brand-black text-brand-white font-inter overflow-x-hidden antialiased`}>
         <Preloader />
         <CustomCursor />
         <GrainOverlay />
