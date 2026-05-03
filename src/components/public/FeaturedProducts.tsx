@@ -3,6 +3,7 @@ import Image from "next/image"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import AnimatedList from "./AnimatedList"
+import { prisma } from "@/lib/prisma"
 
 export default async function FeaturedProducts() {
   let isReseller = false;
@@ -13,7 +14,15 @@ export default async function FeaturedProducts() {
     console.error("Auth session fetch failed in FeaturedProducts", error);
   }
 
-  const products = [
+  const productsData = await prisma.product.findMany({
+    where: { isActive: true, isFeatured: true },
+    orderBy: { displayOrder: "asc" },
+    include: { category: true },
+    take: 8
+  })
+
+  // Fallback to demo data if DB is empty
+  const products = productsData.length > 0 ? productsData : [
     { 
       id: '1', name: 'Premium Oversized T-Shirt - Black', slug: 'premium-oversized-black', 
       images: '["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"]', 

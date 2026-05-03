@@ -4,8 +4,16 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 
-export default function CategoryShowcase() {
-  const categories = [
+type Category = {
+  id: string
+  name: string
+  slug: string
+  image: string | null
+  status: string
+}
+
+export default function CategoryShowcase({ categories = [] }: { categories?: Category[] }) {
+  const displayCategories = categories.length > 0 ? categories : [
     { id: '1', name: 'Oversized Tees', slug: 'oversized-tshirts', status: 'ACTIVE', image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop', badge: 'Explore' },
     { id: '2', name: 'Polo T-Shirts', slug: 'polo-tshirts', status: 'ACTIVE', image: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=600&auto=format&fit=crop', badge: 'Ready to Ship' },
     { id: '3', name: 'Premium Hoodies', slug: 'hoodies', status: 'ACTIVE', image: 'https://images.unsplash.com/photo-1578932750294-f5075e85f44a?q=80&w=600&auto=format&fit=crop', badge: 'Ready to Ship' },
@@ -61,14 +69,14 @@ export default function CategoryShowcase() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
         >
-          {categories.map((category) => (
+          {displayCategories.map((category) => (
             <motion.div
               key={category.id}
               variants={itemVariants}
             >
               <Link href={`/products?category=${category.slug}`} className="group block relative aspect-[4/5] overflow-hidden bg-brand-surface1 border border-brand-border hover:border-brand-accent/50 transition-all duration-700 rounded-[2px] shadow-2xl">
                 <Image 
-                  src={category.image} 
+                  src={category.image || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop'} 
                   alt={category.name}
                   fill
                   className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
@@ -79,7 +87,7 @@ export default function CategoryShowcase() {
                 <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="flex items-center gap-3 mb-4">
                      <div className="h-[1px] w-8 bg-brand-accent transform origin-left transition-all duration-500 group-hover:w-12"></div>
-                     <span className="font-bebas text-[14px] text-brand-accent tracking-[0.2em] uppercase">{category.badge}</span>
+                     <span className="font-bebas text-[14px] text-brand-accent tracking-[0.2em] uppercase">{'badge' in category ? category.badge as string : 'Explore'}</span>
                   </div>
                   <h3 className="font-bebas text-[36px] md:text-[52px] text-brand-white leading-none mb-4 uppercase">{category.name}</h3>
                   <p className="font-inter text-[12px] md:text-[14px] text-brand-muted opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center gap-2">

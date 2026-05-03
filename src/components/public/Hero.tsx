@@ -25,9 +25,18 @@ const charVariants = {
   }
 }
 
-export default function Hero() {
+export default function Hero({ 
+  banners = [], 
+  whatsappNumberProp 
+}: { 
+  banners?: any[], 
+  whatsappNumberProp?: string 
+}) {
   const headline = "QUALITY THAT SELLS ITSELF"
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
+  const whatsappNumber = whatsappNumberProp || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
+
+  const defaultImage = "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop"
+  const bgImage = banners.length > 0 ? banners[0].image : defaultImage
 
   return (
     <section className="relative h-screen min-h-[640px] bg-brand-black flex items-center justify-center overflow-hidden w-full max-w-full">
@@ -48,8 +57,8 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
             transition={{ duration: 2 }}
-            src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=2565&auto=format&fit=crop"
-            alt="Highgrand Factory"
+            src={bgImage}
+            alt={banners.length > 0 ? banners[0].altText : "Highgrand Factory"}
             className="w-full h-full object-cover mix-blend-luminosity"
           />
         </motion.div>

@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma"
 import Hero from "@/components/public/Hero"
 import StatsStrip from "@/components/public/StatsStrip"
 import CategoryShowcase from "@/components/public/CategoryShowcase"
@@ -6,15 +7,37 @@ import HomeSections from "@/components/public/HomeSections"
 import { TestimonialCarousel, BottomCTA } from "@/components/public/TestimonialsCTA"
 import SkewSection from "@/components/public/SkewSection"
 
-export default function Home() {
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    where: { status: "ACTIVE" },
+    orderBy: { displayOrder: "asc" },
+    take: 3
+  })
+
+  const testimonials = await prisma.testimonial.findMany({
+    where: { isActive: true },
+    orderBy: { displayOrder: "asc" }
+  })
+
+  const banners = await prisma.banner.findMany({
+    where: { isActive: true },
+    orderBy: { displayOrder: "asc" }
+  })
+
+  const settings = await prisma.siteSettings.findMany()
+  const settingsMap = settings.reduce((acc, curr) => {
+    acc[curr.key] = curr.value
+    return acc
+  }, {} as Record<string, string>)
+  
   return (
     <>
-      <Hero />
+      <Hero banners={banners} whatsappNumberProp={settingsMap["whatsappNumber"]} />
       <SkewSection>
         <StatsStrip />
       </SkewSection>
       <SkewSection>
-        <CategoryShowcase />
+        <CategoryShowcase categories={categories} />
       </SkewSection>
       <SkewSection>
         <FeaturedProducts />
@@ -23,7 +46,7 @@ export default function Home() {
         <HomeSections />
       </SkewSection>
       <SkewSection>
-        <TestimonialCarousel />
+        <TestimonialCarousel testimonials={testimonials} />
       </SkewSection>
       <SkewSection>
         <BottomCTA />

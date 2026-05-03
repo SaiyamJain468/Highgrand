@@ -34,12 +34,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           ))}
         </nav>
 
-        <div className="p-4 border-t border-brand-border">
+        <div className="p-4 border-t border-brand-border flex flex-col gap-2">
           <form action="/api/auth/signout" method="POST">
             <button type="submit" className="w-full flex items-center gap-3 px-4 py-3 text-brand-muted hover:text-brand-error hover:bg-[#1A0A0A] font-inter text-[13px] font-medium transition-colors">
               <LogOut size={16} /> Sign Out
             </button>
           </form>
+          <div className="text-center mt-2">
+            <a href="https://github.com/SaiyamJain468" target="_blank" rel="noopener noreferrer" className="font-inter text-[10px] text-brand-muted hover:text-brand-accent transition-colors block uppercase tracking-widest">
+              Made by Saiyam Jain
+            </a>
+          </div>
         </div>
       </aside>
 

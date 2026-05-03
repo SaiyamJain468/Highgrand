@@ -5,6 +5,7 @@ import TopMarquee from "@/components/public/TopMarquee"
 import CustomCursor from "@/components/public/CustomCursor"
 import SmoothScroll from "@/components/public/SmoothScroll"
 import { Metadata } from "next"
+import { prisma } from "@/lib/prisma"
 
 export const metadata: Metadata = {
   title: {
@@ -33,22 +34,29 @@ export const metadata: Metadata = {
   },
 }
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const settings = await prisma.siteSettings.findMany()
+  const settingsMap = settings.reduce((acc, curr) => {
+    acc[curr.key] = curr.value
+    return acc
+  }, {} as Record<string, string>)
+
   return (
     <SmoothScroll>
       <div className="flex flex-col min-h-screen relative overflow-x-hidden">
         <CustomCursor />
-        <TopMarquee />
+        <TopMarquee announcement={settingsMap["announcementText"]} />
         <Navbar />
         <main className="flex-1 relative z-10 overflow-x-hidden">
           {children}
         </main>
         <Footer />
-        <WhatsAppButton />
+        <WhatsAppButton numberProp={settingsMap["whatsappNumber"]} />
       </div>
     </SmoothScroll>
   )

@@ -3,24 +3,26 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import Image from "next/image"
 
-export function TestimonialCarousel() {
-  const testimonials = [
-    { text: "Highgrand's oversized tees changed my entire brand's trajectory. 220 GSM quality feels incredibly premium.", author: "Rahul Malhotra", business: "Urban Origins", city: "Mumbai" },
-    { text: "No MOQ combined with their wholesale pricing allows me to test drops without massive upfront risk.", author: "Sneha Patel", business: "The Street Edit", city: "Bangalore" },
-    { text: "Fit and finish is world-standard. Bio-washed cotton holds up perfectly even after 20+ washes.", author: "Arjun Sharma", business: "Varsity Co", city: "Delhi" },
-    { text: "My customers noticed the upgrade in fabric quality instantly. Worth every penny for quality.", author: "Karan Tiwari", business: "Hype Beast", city: "Pune" },
-    { text: "Finally a reliable blank supplier in India that actually stands by their manufacturing times.", author: "Ananya Iyer", business: "Void Wear", city: "Ahmedabad" },
-    { text: "The acid wash collection is unbelievable. Sold out within 2 hours of my drop.", author: "Vikram Singh", business: "Raw Culture", city: "Chandigarh" },
-    { text: "Best oversized fit in the market. True boxy silhouette that customers actually want.", author: "Meera Das", business: "Aesthetic Era", city: "Kolkata" },
-    { text: "Highgrand handles all our bulk requirements with 100% consistency in dyeing.", author: "Zaid Khan", business: "Minimalist Lab", city: "Hyderabad" },
-    { text: "Switching to Highgrand reduced our return rate due to fabric quality by 90%.", author: "Aditi Rao", business: "Purity Apparel", city: "Chennai" },
-    { text: "Wholesale prices are very competitive given the 240 GSM heavyweights they offer.", author: "Rohan Varma", business: "Hustle Co", city: "Jaipur" },
-    { text: "Their customer support on the reseller portal is lightning fast. 10/10 service.", author: "Ishani Paul", business: "Modern Tribe", city: "Indore" },
-    { text: "The fabric hand-feel is superior to any other blank supplier we've used in 5 years.", author: "Devansh G.", business: "Origin Blanks", city: "Surat" },
+export function TestimonialCarousel({ testimonials: dynamicTestimonials = [] }: { testimonials?: any[] }) {
+  const staticTestimonials = [
+    { content: "Highgrand's oversized tees changed my entire brand's trajectory. 220 GSM quality feels incredibly premium.", author: "Rahul Malhotra", businessName: "Urban Origins", city: "Mumbai" },
+    { content: "No MOQ combined with their wholesale pricing allows me to test drops without massive upfront risk.", author: "Sneha Patel", businessName: "The Street Edit", city: "Bangalore" },
+    { content: "Fit and finish is world-standard. Bio-washed cotton holds up perfectly even after 20+ washes.", author: "Arjun Sharma", businessName: "Varsity Co", city: "Delhi" },
+    { content: "My customers noticed the upgrade in fabric quality instantly. Worth every penny for quality.", author: "Karan Tiwari", businessName: "Hype Beast", city: "Pune" },
+    { content: "Finally a reliable blank supplier in India that actually stands by their manufacturing times.", author: "Ananya Iyer", businessName: "Void Wear", city: "Ahmedabad" },
+    { content: "The acid wash collection is unbelievable. Sold out within 2 hours of my drop.", author: "Vikram Singh", businessName: "Raw Culture", city: "Chandigarh" },
+    { content: "Best oversized fit in the market. True boxy silhouette that customers actually want.", author: "Meera Das", businessName: "Aesthetic Era", city: "Kolkata" },
+    { content: "Highgrand handles all our bulk requirements with 100% consistency in dyeing.", author: "Zaid Khan", businessName: "Minimalist Lab", city: "Hyderabad" },
+    { content: "Switching to Highgrand reduced our return rate due to fabric quality by 90%.", author: "Aditi Rao", businessName: "Purity Apparel", city: "Chennai" },
+    { content: "Wholesale prices are very competitive given the 240 GSM heavyweights they offer.", author: "Rohan Varma", businessName: "Hustle Co", city: "Jaipur" },
+    { content: "Their customer support on the reseller portal is lightning fast. 10/10 service.", author: "Ishani Paul", businessName: "Modern Tribe", city: "Indore" },
+    { content: "The fabric hand-feel is superior to any other blank supplier we've used in 5 years.", author: "Devansh G.", businessName: "Origin Blanks", city: "Surat" },
   ]
 
+  const baseTestimonials = dynamicTestimonials.length > 0 ? dynamicTestimonials : staticTestimonials;
+
   // Create a triple-length array to ensure the "at least 50" feel and gapless marquee
-  const items = [...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials]
+  const items = [...baseTestimonials, ...baseTestimonials, ...baseTestimonials, ...baseTestimonials, ...baseTestimonials]
 
   return (
     <section className="bg-[#050505] border-y border-brand-border py-40 overflow-x-hidden relative">
@@ -78,13 +80,13 @@ export function TestimonialCarousel() {
                     <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                   ))}
                 </div>
-                <p className="font-playfair text-[20px] md:text-[22px] text-brand-cream italic leading-[1.6] mb-12 relative z-10 whitespace-normal">"{t.text}"</p>
+                <p className="font-playfair text-[20px] md:text-[22px] text-brand-cream italic leading-[1.6] mb-12 relative z-10 whitespace-normal">"{t.content}"</p>
               </div>
               
               <div className="flex items-center gap-4 relative z-10 border-t border-brand-border/20 pt-6">
                 <div className="flex-1">
-                  <p className="font-bebas text-[20px] text-brand-white uppercase tracking-wider">{t.business}</p>
-                  <p className="font-inter text-[11px] text-brand-disabled uppercase tracking-widest mt-1 font-bold">{t.author} · {t.city}</p>
+                  <p className="font-bebas text-[20px] text-brand-white uppercase tracking-wider">{t.businessName}</p>
+                  <p className="font-inter text-[11px] text-brand-disabled uppercase tracking-widest mt-1 font-bold">{t.author || t.name} · {t.city}</p>
                 </div>
               </div>
 
