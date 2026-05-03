@@ -22,7 +22,7 @@ export async function saveSettings(formData: FormData) {
       create: { key: "whatsappNumber", value: whatsappNumber }
     })
   } catch (error) {
-    return { error: "Failed to save settings" }
+    throw new Error()
   }
 
   revalidatePath("/admin/settings")

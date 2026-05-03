@@ -7,7 +7,10 @@ export default async function AdminResellers({ searchParams }: { searchParams: {
 
   const users = await prisma.user.findMany({
     where: {
-      resellerStatus: currentStatus
+      status: currentStatus as any
+    },
+    include: {
+      resellerProfile: true
     },
     orderBy: { createdAt: "desc" }
   })
@@ -72,10 +75,10 @@ export default async function AdminResellers({ searchParams }: { searchParams: {
                       <p className="font-inter text-[11px] text-brand-muted mt-1">{user.phone}</p>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="font-inter text-[13px] text-brand-white">{user.businessName}</p>
-                      <p className="font-inter text-[11px] text-brand-muted">{user.city} ({user.businessType})</p>
+                      <p className="font-inter text-[13px] text-brand-white">{user.resellerProfile?.businessName || 'N/A'}</p>
+                      <p className="font-inter text-[11px] text-brand-muted">{user.resellerProfile?.city || 'N/A'} ({user.resellerProfile?.businessType || 'N/A'})</p>
                     </td>
-                    <td className="py-4 px-6 font-inter text-[13px] text-brand-white">{user.expectedVolume}</td>
+                    <td className="py-4 px-6 font-inter text-[13px] text-brand-white">{user.resellerProfile?.monthlyVolume || 'N/A'}</td>
                     
                     {currentStatus === 'PENDING' && (
                       <td className="py-4 px-6">

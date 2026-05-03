@@ -10,7 +10,7 @@ export async function markAsRead(id: string) {
       data: { status: "SEEN" }
     })
   } catch (error) {
-    return { error: "Failed to mark as read" }
+    throw new Error()
   }
   revalidatePath("/admin/inquiries")
 }

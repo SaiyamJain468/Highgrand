@@ -9,11 +9,11 @@ export async function approveReseller(id: string) {
       where: { id },
       data: {
         role: "RESELLER",
-        resellerStatus: "APPROVED"
+        status: "APPROVED"
       }
     })
   } catch (error) {
-    return { error: "Failed to approve" }
+    throw new Error()
   }
   revalidatePath("/admin/resellers")
 }
@@ -23,12 +23,12 @@ export async function rejectReseller(id: string) {
     await prisma.user.update({
       where: { id },
       data: {
-        role: "USER",
-        resellerStatus: "REJECTED"
+        role: "RESELLER",
+        status: "REJECTED"
       }
     })
   } catch (error) {
-    return { error: "Failed to reject" }
+    throw new Error()
   }
   revalidatePath("/admin/resellers")
 }

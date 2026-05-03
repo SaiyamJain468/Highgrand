@@ -13,14 +13,14 @@ export async function createCategory(formData: FormData) {
   const status = formData.get("status") as CatStatus
   const displayOrder = parseInt((formData.get("displayOrder") as string) || "0")
 
-  if (!name || !slug) return { error: "Name and slug are required" }
+  if (!name || !slug) throw new Error()
 
   try {
     await prisma.category.create({
       data: { name, slug, description, image, status, displayOrder }
     })
   } catch (error: any) {
-    return { error: error.message || "Failed to create category" }
+    throw new Error()
   }
 
   revalidatePath("/admin/categories")
@@ -36,7 +36,7 @@ export async function updateCategory(id: string, formData: FormData) {
   const status = formData.get("status") as CatStatus
   const displayOrder = parseInt((formData.get("displayOrder") as string) || "0")
 
-  if (!name || !slug) return { error: "Name and slug are required" }
+  if (!name || !slug) throw new Error()
 
   try {
     await prisma.category.update({
@@ -44,7 +44,7 @@ export async function updateCategory(id: string, formData: FormData) {
       data: { name, slug, description, image, status, displayOrder }
     })
   } catch (error: any) {
-    return { error: error.message || "Failed to update category" }
+    throw new Error()
   }
 
   revalidatePath("/admin/categories")
@@ -56,7 +56,7 @@ export async function deleteCategory(id: string) {
   try {
     await prisma.category.delete({ where: { id } })
   } catch (error: any) {
-    return { error: error.message || "Failed to delete category" }
+    throw new Error()
   }
 
   revalidatePath("/admin/categories")

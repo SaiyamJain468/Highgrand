@@ -12,14 +12,14 @@ export async function createBanner(formData: FormData) {
   const isActive = formData.get("isActive") === "true"
   const displayOrder = parseInt(formData.get("displayOrder") as string) || 0
 
-  if (!image) return { error: "Image URL is required" }
+  if (!image) throw new Error()
 
   try {
     await prisma.banner.create({
       data: { image, mobileImage, link, altText, isActive, displayOrder }
     })
   } catch (error) {
-    return { error: "Failed to create banner" }
+    throw new Error()
   }
 
   revalidatePath("/admin/banners")
@@ -34,7 +34,7 @@ export async function toggleBanner(id: string, currentStatus: boolean) {
       data: { isActive: !currentStatus }
     })
   } catch (error) {
-    return { error: "Failed to toggle banner" }
+    throw new Error()
   }
   revalidatePath("/admin/banners")
   revalidatePath("/")
@@ -44,7 +44,7 @@ export async function deleteBanner(id: string) {
   try {
     await prisma.banner.delete({ where: { id } })
   } catch (error) {
-    return { error: "Failed to delete banner" }
+    throw new Error()
   }
   revalidatePath("/admin/banners")
   revalidatePath("/")

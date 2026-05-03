@@ -26,7 +26,7 @@ export async function createProduct(formData: FormData) {
   const isFeatured = formData.get("isFeatured") === "true"
   const displayOrder = parseInt(formData.get("displayOrder") as string) || 0
 
-  if (!name || !slug || !categoryId) return { error: "Name, slug, and category are required" }
+  if (!name || !slug || !categoryId) throw new Error()
 
   try {
     await prisma.product.create({
@@ -37,7 +37,7 @@ export async function createProduct(formData: FormData) {
       }
     })
   } catch (error: any) {
-    return { error: error.message || "Failed to create product" }
+    throw new Error()
   }
 
   revalidatePath("/admin/products")
@@ -68,7 +68,7 @@ export async function updateProduct(id: string, formData: FormData) {
   const isFeatured = formData.get("isFeatured") === "true"
   const displayOrder = parseInt(formData.get("displayOrder") as string) || 0
 
-  if (!name || !slug || !categoryId) return { error: "Name, slug, and category are required" }
+  if (!name || !slug || !categoryId) throw new Error()
 
   try {
     await prisma.product.update({
@@ -80,7 +80,7 @@ export async function updateProduct(id: string, formData: FormData) {
       }
     })
   } catch (error: any) {
-    return { error: error.message || "Failed to update product" }
+    throw new Error()
   }
 
   revalidatePath("/admin/products")
@@ -93,7 +93,7 @@ export async function deleteProduct(id: string) {
   try {
     await prisma.product.delete({ where: { id } })
   } catch (error: any) {
-    return { error: error.message || "Failed to delete product" }
+    throw new Error()
   }
 
   revalidatePath("/admin/products")
