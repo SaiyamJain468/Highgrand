@@ -1,4 +1,19 @@
 // This file acts as a proxy for Hostinger's Node.js environment
-// which strictly looks for a root server.js or app.js file to boot.
-// It simply imports the highly-optimized Next.js standalone server.
-require('./.next/standalone/server.js');
+const fs = require('fs');
+
+process.on('uncaughtException', function(err) {
+    fs.appendFileSync(__dirname + '/hostinger-error.log', new Date().toISOString() + ' Uncaught Exception: ' + err.stack + '\n');
+    process.exit(1);
+});
+
+process.on('unhandledRejection', function(reason, p) {
+    fs.appendFileSync(__dirname + '/hostinger-error.log', new Date().toISOString() + ' Unhandled Rejection: ' + (reason.stack || reason) + '\n');
+});
+
+try {
+    require('./.next/standalone/server.js');
+} catch (err) {
+    fs.appendFileSync(__dirname + '/hostinger-error.log', new Date().toISOString() + ' Sync Error: ' + err.stack + '\n');
+    process.exit(1);
+}
+

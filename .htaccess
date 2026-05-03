@@ -1,0 +1,10 @@
+# Enable Passenger for Node.js
+PassengerEnabled on
+PassengerAppType node
+PassengerStartupFile app.js
+PassengerAppRoot .
+
+# Ensure Litespeed doesn't serve the app.js directly as text
+<Files "app.js">
+    Require all denied
+</Files>
