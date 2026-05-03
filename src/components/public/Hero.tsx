@@ -4,8 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Magnetic from "./Magnetic"
 import TextReveal from "./TextReveal"
-
-const heroWord = {
+import Image from "next/image"
   hidden: { opacity: 0, y: 56, skewY: 5 },
   visible: {
     opacity: 1,
@@ -53,14 +52,21 @@ export default function Hero({
           animate={{ scale: 1.05 }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "mirror" }}
         >
-          <motion.img
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
-            transition={{ duration: 2 }}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.25 }}
+          transition={{ duration: 2 }}
+        >
+          <Image
             src={bgImage}
             alt={banners.length > 0 ? banners[0].altText : "Highgrand Factory"}
-            className="w-full h-full object-cover mix-blend-luminosity"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover mix-blend-luminosity"
           />
+        </motion.div>
         </motion.div>
 
         {/* Vignette Overlay */}

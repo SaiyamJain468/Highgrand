@@ -1,11 +1,16 @@
+import dynamic from "next/dynamic"
 import { prisma } from "@/lib/prisma"
 import Hero from "@/components/public/Hero"
 import StatsStrip from "@/components/public/StatsStrip"
 import CategoryShowcase from "@/components/public/CategoryShowcase"
 import FeaturedProducts from "@/components/public/FeaturedProducts"
 import HomeSections from "@/components/public/HomeSections"
-import { TestimonialCarousel, BottomCTA } from "@/components/public/TestimonialsCTA"
 import SkewSection from "@/components/public/SkewSection"
+
+const TestimonialCarousel = dynamic(() => import("@/components/public/TestimonialsCTA").then(mod => mod.TestimonialCarousel));
+const BottomCTA = dynamic(() => import("@/components/public/TestimonialsCTA").then(mod => mod.BottomCTA));
+
+export const revalidate = 60; // Enable ISR, regenerate every 60 seconds
 
 export default async function Home() {
   let categories: any[] = [];

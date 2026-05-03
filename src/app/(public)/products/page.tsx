@@ -2,6 +2,8 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 
+export const revalidate = 60; // Enable ISR, regenerate every 60 seconds
+
 export default async function ProductsPage({
   searchParams,
 }: {
