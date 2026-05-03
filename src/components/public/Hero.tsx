@@ -5,6 +5,8 @@ import Link from "next/link"
 import Magnetic from "./Magnetic"
 import TextReveal from "./TextReveal"
 import Image from "next/image"
+
+const wordVariants = {
   hidden: { opacity: 0, y: 56, skewY: 5 },
   visible: {
     opacity: 1,
