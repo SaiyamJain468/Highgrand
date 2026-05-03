@@ -1,4 +1,4 @@
-import { updateCategory } from "../../actions"
+import { updateCategory } from "../actions"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { notFound } from "next/navigation"
