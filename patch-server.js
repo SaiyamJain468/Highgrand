@@ -6,18 +6,17 @@ const serverJsPath = path.join(__dirname, '.next', 'standalone', 'server.js');
 if (fs.existsSync(serverJsPath)) {
   let content = fs.readFileSync(serverJsPath, 'utf8');
 
-  // Replace whatever port logic Next.js generated with our Unix socket compatible logic
+  // Replace default Next.js port logic to support Hostinger Unix sockets
   content = content.replace(
-    /let currentPort = [^\n]+/,
+    /let currentPort = parseInt\(process\.env\.PORT, 10\) \|\| 3000/g,
     `let currentPort = process.env.PORT || 3000;
 if (typeof currentPort === 'string' && !isNaN(parseInt(currentPort, 10)) && currentPort == parseInt(currentPort, 10)) {
   currentPort = parseInt(currentPort, 10);
 }`
   );
 
-  // Replace whatever hostname logic Next.js generated
   content = content.replace(
-    /const hostname = [^\n]+/,
+    /const hostname = process\.env\.HOSTNAME \|\| '0\.0\.0\.0'/g,
     `const hostname = typeof currentPort === 'string' ? undefined : (process.env.HOSTNAME || '0.0.0.0');`
   );
 
