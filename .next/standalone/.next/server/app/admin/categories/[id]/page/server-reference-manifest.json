@@ -1,0 +1,41 @@
+{
+  "node": {
+    "406c264387b2ab9ae0f34aea1056c3ea4a9da9901a": {
+      "workers": {
+        "app/admin/categories/[id]/page": {
+          "moduleId": 38266,
+          "async": false,
+          "exportedName": "deleteCategory",
+          "filename": "src/app/admin/categories/actions.ts"
+        }
+      },
+      "exportedName": "deleteCategory",
+      "filename": "src/app/admin/categories/actions.ts"
+    },
+    "40bae44e37027ba32cc7955f3ef8a28210f438986f": {
+      "workers": {
+        "app/admin/categories/[id]/page": {
+          "moduleId": 38266,
+          "async": false,
+          "exportedName": "createCategory",
+          "filename": "src/app/admin/categories/actions.ts"
+        }
+      },
+      "exportedName": "createCategory",
+      "filename": "src/app/admin/categories/actions.ts"
+    },
+    "60b6e069ade77bb16a5f30a699d328aa26660deae3": {
+      "workers": {
+        "app/admin/categories/[id]/page": {
+          "moduleId": 38266,
+          "async": false,
+          "exportedName": "updateCategory",
+          "filename": "src/app/admin/categories/actions.ts"
+        }
+      },
+      "exportedName": "updateCategory",
+      "filename": "src/app/admin/categories/actions.ts"
+    }
+  },
+  "edge": {}
+}

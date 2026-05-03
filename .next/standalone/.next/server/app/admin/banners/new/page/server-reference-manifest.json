@@ -1,0 +1,41 @@
+{
+  "node": {
+    "4042634e4190072765504cc255f11387477ea9f575": {
+      "workers": {
+        "app/admin/banners/new/page": {
+          "moduleId": 64023,
+          "async": false,
+          "exportedName": "createBanner",
+          "filename": "src/app/admin/banners/actions.ts"
+        }
+      },
+      "exportedName": "createBanner",
+      "filename": "src/app/admin/banners/actions.ts"
+    },
+    "40a4b2e3634ad6a3e0f9e70a1b7c842f6c5b8ff964": {
+      "workers": {
+        "app/admin/banners/new/page": {
+          "moduleId": 64023,
+          "async": false,
+          "exportedName": "deleteBanner",
+          "filename": "src/app/admin/banners/actions.ts"
+        }
+      },
+      "exportedName": "deleteBanner",
+      "filename": "src/app/admin/banners/actions.ts"
+    },
+    "60966ea12d45a751990f625b0a1996d943f6a4fe52": {
+      "workers": {
+        "app/admin/banners/new/page": {
+          "moduleId": 64023,
+          "async": false,
+          "exportedName": "toggleBanner",
+          "filename": "src/app/admin/banners/actions.ts"
+        }
+      },
+      "exportedName": "toggleBanner",
+      "filename": "src/app/admin/banners/actions.ts"
+    }
+  },
+  "edge": {}
+}

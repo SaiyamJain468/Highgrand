@@ -1,0 +1,17 @@
+{
+  "node": {
+    "40ff23dd6a26a0e0beb017071eac47dc49f959873d": {
+      "workers": {
+        "app/admin/settings/page": {
+          "moduleId": 87811,
+          "async": false,
+          "exportedName": "saveSettings",
+          "filename": "src/app/admin/settings/actions.ts"
+        }
+      },
+      "exportedName": "saveSettings",
+      "filename": "src/app/admin/settings/actions.ts"
+    }
+  },
+  "edge": {}
+}
