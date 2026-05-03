@@ -42,11 +42,24 @@ export default async function PublicLayout({
   children: React.ReactNode
 }) {
 
-  const settings = await prisma.siteSettings.findMany()
-  const settingsMap = settings.reduce((acc, curr) => {
-    acc[curr.key] = curr.value
-    return acc
-  }, {} as Record<string, string>)
+  // Attempt to fetch settings with a 5-second timeout to prevent 504 Gateway Time-out
+  let settingsMap: Record<string, string> = {
+    "announcementText": "Database connection timeout - Check Hostinger IP / Firewall",
+    "whatsappNumber": ""
+  };
+  try {
+    const settingsPromise = prisma.siteSettings.findMany();
+    const timeoutPromise = new Promise<any[]>((_, reject) => 
+      setTimeout(() => reject(new Error("Database connection timed out after 5 seconds")), 5000)
+    );
+    const settings = await Promise.race([settingsPromise, timeoutPromise]);
+    settingsMap = settings.reduce((acc, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {} as Record<string, string>);
+  } catch (err) {
+    console.error("Layout settings fetch failed:", err);
+  }
 
   return (
     <SmoothScroll>
