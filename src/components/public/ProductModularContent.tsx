@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 interface ContentBlock {
   id: string
-  type: "banner" | "features" | "split" | "text"
+  type: "banner" | "features" | "split" | "text" | "carousel" | "accordion"
   data: any
 }
 
