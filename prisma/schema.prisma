@@ -17,6 +17,8 @@ model User {
   role          Role      @default(RESELLER)
   status        UserStatus @default(PENDING)   // PENDING | APPROVED | REJECTED
   resellerProfile ResellerProfile?
+  resetToken     String?   @unique
+  resetTokenExpiry DateTime?
   createdAt     DateTime  @default(now())
 }
 

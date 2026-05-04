@@ -5,7 +5,13 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { CatStatus } from "@prisma/client"
 
-export async function createCategory(formData: FormData) {
+export type ActionState = {
+  success?: boolean;
+  error?: string;
+  message?: string;
+}
+
+export async function createCategory(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const name = formData.get("name") as string
   const slug = formData.get("slug") as string
   const description = formData.get("description") as string
@@ -13,23 +19,27 @@ export async function createCategory(formData: FormData) {
   const status = formData.get("status") as CatStatus
   const displayOrder = parseInt((formData.get("displayOrder") as string) || "0")
 
-  if (!name || !slug) throw new Error()
+  if (!name || !slug) {
+    return { error: "Name and Slug are required" }
+  }
 
   try {
     await prisma.category.create({
       data: { name, slug, description, image, status, displayOrder }
     })
+    
+    revalidatePath("/admin/categories")
+    revalidatePath("/products")
+    revalidatePath("/")
   } catch (error: any) {
-    throw new Error()
+    console.error("CREATE CATEGORY ERROR:", error)
+    return { error: error.message || "Failed to create category" }
   }
 
-  revalidatePath("/admin/categories")
-  revalidatePath("/products")
-  revalidatePath("/")
   redirect("/admin/categories")
 }
 
-export async function updateCategory(id: string, formData: FormData) {
+export async function updateCategory(prevState: ActionState, id: string, formData: FormData): Promise<ActionState> {
   const name = formData.get("name") as string
   const slug = formData.get("slug") as string
   const description = formData.get("description") as string
@@ -37,20 +47,24 @@ export async function updateCategory(id: string, formData: FormData) {
   const status = formData.get("status") as CatStatus
   const displayOrder = parseInt((formData.get("displayOrder") as string) || "0")
 
-  if (!name || !slug) throw new Error()
+  if (!name || !slug) {
+    return { error: "Name and Slug are required" }
+  }
 
   try {
     await prisma.category.update({
       where: { id },
       data: { name, slug, description, image, status, displayOrder }
     })
+    
+    revalidatePath("/admin/categories")
+    revalidatePath("/products")
+    revalidatePath("/")
   } catch (error: any) {
-    throw new Error()
+    console.error("UPDATE CATEGORY ERROR:", error)
+    return { error: error.message || "Failed to update category" }
   }
 
-  revalidatePath("/admin/categories")
-  revalidatePath("/products")
-  revalidatePath("/")
   redirect("/admin/categories")
 }
 

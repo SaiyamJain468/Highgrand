@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { checkAndNotifyNewProducts } from "../actions/emailActions"
 
 const slugify = (text: string) => text
   .toLowerCase()
@@ -13,7 +14,13 @@ const slugify = (text: string) => text
   .replace(/^-+/, '')       // Trim - from start of text
   .replace(/-+$/, '')       // Trim - from end of text
 
-export async function createProduct(formData: FormData) {
+export type ActionState = {
+  success?: boolean;
+  error?: string;
+  message?: string;
+}
+
+export async function createProduct(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const name = formData.get("name") as string
   const rawSlug = formData.get("slug") as string
   const slug = slugify(rawSlug || name)
@@ -39,11 +46,68 @@ export async function createProduct(formData: FormData) {
   const heroImage = formData.get("heroImage") as string
   const hoverImage = formData.get("hoverImage") as string
 
-  if (!name || !slug || !categoryId) throw new Error("Missing required fields")
+  if (!name || !categoryId) {
+    return { error: "Missing required fields (Name and Category are mandatory)" }
+  }
 
-  let product;
   try {
-    product = await prisma.product.create({
+    const product = await prisma.product.create({
+      data: {
+        name, slug, shortDescription, longDescription, categoryId, images,
+        mrpLabel, wholesaleLabel, moqNote, gsm, composition, weave, finish, washCare,
+        sizes, colors, tags, customContent, isActive, isFeatured, displayOrder,
+        heroImage, hoverImage
+      }
+    })
+    
+    // Check if we should notify resellers about new drops (5+ products in a week)
+    await checkAndNotifyNewProducts()
+    
+    revalidatePath("/admin/products")
+    revalidatePath("/products")
+    revalidatePath("/")
+    
+    redirect(`/admin/products/${product.id}`)
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) throw error // Handle redirect
+    console.error("CREATE PRODUCT ERROR:", error)
+    return { error: error.message || "Failed to create product" }
+  }
+}
+
+export async function updateProduct(prevState: ActionState, id: string, formData: FormData): Promise<ActionState> {
+  const name = formData.get("name") as string
+  const rawSlug = formData.get("slug") as string
+  const slug = slugify(rawSlug || name)
+  const shortDescription = formData.get("shortDescription") as string
+  const longDescription = formData.get("longDescription") as string
+  const categoryId = formData.get("categoryId") as string
+  const images = formData.get("images") as string || "[]"
+  const mrpLabel = formData.get("mrpLabel") as string
+  const wholesaleLabel = formData.get("wholesaleLabel") as string
+  const moqNote = formData.get("moqNote") as string
+  const gsm = parseInt(formData.get("gsm") as string) || 0
+  const composition = formData.get("composition") as string
+  const weave = formData.get("weave") as string
+  const finish = formData.get("finish") as string
+  const washCare = formData.get("washCare") as string
+  const sizes = formData.get("sizes") as string || "[]"
+  const colors = formData.get("colors") as string || "[]"
+  const tags = formData.get("tags") as string || "[]"
+  const customContent = formData.get("customContent") as string || "[]"
+  const isActive = formData.get("isActive") === "true"
+  const isFeatured = formData.get("isFeatured") === "true"
+  const displayOrder = parseInt(formData.get("displayOrder") as string) || 0
+  const heroImage = formData.get("heroImage") as string
+  const hoverImage = formData.get("hoverImage") as string
+
+  if (!name || !categoryId) {
+    return { error: "Missing required fields" }
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id },
       data: {
         name, slug, shortDescription, longDescription, categoryId, images,
         mrpLabel, wholesaleLabel, moqNote, gsm, composition, weave, finish, washCare,
@@ -56,58 +120,10 @@ export async function createProduct(formData: FormData) {
     revalidatePath("/products")
     revalidatePath("/")
   } catch (error: any) {
-    console.error("CREATE PRODUCT ERROR:", error)
-    throw new Error(error.message || "Failed to create product")
-  }
-  redirect(`/admin/products/${product.id}`)
-}
-
-export async function updateProduct(id: string, formData: FormData) {
-  const name = formData.get("name") as string
-  const rawSlug = formData.get("slug") as string
-  const slug = slugify(rawSlug || name)
-  const shortDescription = formData.get("shortDescription") as string
-  const longDescription = formData.get("longDescription") as string
-  const categoryId = formData.get("categoryId") as string
-  const images = formData.get("images") as string || "[]"
-  const mrpLabel = formData.get("mrpLabel") as string
-  const wholesaleLabel = formData.get("wholesaleLabel") as string
-  const moqNote = formData.get("moqNote") as string
-  const gsm = parseInt(formData.get("gsm") as string) || 0
-  const composition = formData.get("composition") as string
-  const weave = formData.get("weave") as string
-  const finish = formData.get("finish") as string
-  const washCare = formData.get("washCare") as string
-  const sizes = formData.get("sizes") as string || "[]"
-  const colors = formData.get("colors") as string || "[]"
-  const tags = formData.get("tags") as string || "[]"
-  const customContent = formData.get("customContent") as string || "[]"
-  const isActive = formData.get("isActive") === "true"
-  const isFeatured = formData.get("isFeatured") === "true"
-  const displayOrder = parseInt(formData.get("displayOrder") as string) || 0
-  const heroImage = formData.get("heroImage") as string
-  const hoverImage = formData.get("hoverImage") as string
-
-  if (!name || !slug || !categoryId) throw new Error("Missing required fields")
-
-  try {
-    await prisma.product.update({
-      where: { id },
-      data: {
-        name, slug, shortDescription, longDescription, categoryId, images,
-        mrpLabel, wholesaleLabel, moqNote, gsm, composition, weave, finish, washCare,
-        sizes, colors, tags, customContent, isActive, isFeatured, displayOrder,
-        heroImage, hoverImage
-      }
-    })
-  } catch (error: any) {
     console.error("UPDATE PRODUCT ERROR:", error)
-    throw new Error(error.message || "Failed to update product")
+    return { error: error.message || "Failed to update product" }
   }
 
-  revalidatePath("/admin/products")
-  revalidatePath("/products")
-  revalidatePath("/")
   redirect("/admin/products")
 }
 

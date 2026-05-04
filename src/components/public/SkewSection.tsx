@@ -37,7 +37,7 @@ export default function SkewSection({ children }: { children: ReactNode }) {
         skewY: isMobile ? 0 : skewSpring,
         willChange: "transform" 
       }}
-      className="origin-center"
+      className="relative origin-center"
     >
       {children}
     </motion.div>

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 import { sendEmail } from "@/lib/email"
-import { getApprovalEmailTemplate } from "@/lib/emailTemplates"
+import { getApprovalEmailTemplate, getRejectionEmailTemplate } from "@/lib/emailTemplates"
 
 export async function approveReseller(id: string) {
   try {
@@ -31,15 +31,23 @@ export async function approveReseller(id: string) {
 
 export async function rejectReseller(id: string) {
   try {
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: { id },
       data: {
         role: "RESELLER",
         status: "REJECTED"
       }
     })
+
+    // Send Rejection Email
+    await sendEmail({
+      to: user.email,
+      subject: "Highgrand Reseller Application Update",
+      html: getRejectionEmailTemplate(user.name)
+    })
   } catch (error) {
-    throw new Error()
+    console.error("REJECT RESELLER ERROR:", error)
+    throw new Error("Failed to reject reseller")
   }
   revalidatePath("/admin/resellers")
 }

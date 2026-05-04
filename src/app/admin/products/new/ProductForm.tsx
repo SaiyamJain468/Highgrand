@@ -1,7 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { createProduct } from "../actions"
+import { useState, useActionState, useEffect } from "react"
+import { createProduct, ActionState } from "../actions"
+import toast from "react-hot-toast"
+import { Loader2 } from "lucide-react"
 import ImageUpload from "@/components/admin/ImageUpload"
 import ProductContentBuilder from "@/components/admin/ProductContentBuilder"
 
@@ -14,6 +16,17 @@ export default function ProductForm({ categories }: { categories: any[] }) {
   const [newSize, setNewSize] = useState("")
   const [newColorName, setNewColorName] = useState("")
   const [newColorHex, setNewColorHex] = useState("#000000")
+
+  const [state, formAction, isPending] = useActionState(createProduct, { success: false })
+
+  useEffect(() => {
+    if (state.error) {
+      toast.error(state.error)
+    }
+    if (state.success) {
+      toast.success(state.message || "Product created successfully")
+    }
+  }, [state])
 
   const handleImageChange = (url: string) => {
     setImageUrls((prev) => [...prev, url])
@@ -54,23 +67,23 @@ export default function ProductForm({ categories }: { categories: any[] }) {
   }
 
   return (
-    <form action={createProduct} className="flex flex-col gap-8">
+    <form action={formAction} className="flex flex-col gap-8 opacity-100 data-[pending=true]:opacity-70 transition-opacity" data-pending={isPending}>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Name *</label>
-          <input name="name" type="text" required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="name" type="text" required disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
 
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Slug *</label>
-          <input name="slug" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" placeholder="Auto-generated if empty" />
+          <input name="slug" type="text" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" placeholder="Auto-generated if empty" />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
         <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Category *</label>
-        <select name="categoryId" required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors">
+        <select name="categoryId" required disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50">
           <option value="">Select Category</option>
           {categories.map(c => (
             <option key={c.id} value={c.id}>{c.name}</option>
@@ -80,57 +93,57 @@ export default function ProductForm({ categories }: { categories: any[] }) {
 
       <div className="flex flex-col gap-2">
         <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Short Description</label>
-        <textarea name="shortDescription" rows={2} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+        <textarea name="shortDescription" rows={2} disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
       </div>
 
       <div className="flex flex-col gap-2">
         <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Long Description</label>
-        <textarea name="longDescription" rows={5} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+        <textarea name="longDescription" rows={5} disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">MRP Label *</label>
-          <input name="mrpLabel" type="text" required placeholder="₹850" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="mrpLabel" type="text" required disabled={isPending} placeholder="₹850" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Wholesale Label *</label>
-          <input name="wholesaleLabel" type="text" required placeholder="₹420" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="wholesaleLabel" type="text" required disabled={isPending} placeholder="₹420" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">MOQ Note</label>
-          <input name="moqNote" type="text" placeholder="e.g. 50 pcs" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="moqNote" type="text" disabled={isPending} placeholder="e.g. 50 pcs" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">GSM</label>
-          <input name="gsm" type="number" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="gsm" type="number" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Composition (Optional)</label>
-          <input name="composition" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="composition" type="text" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Weave (Optional)</label>
-          <input name="weave" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="weave" type="text" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Finish (Optional)</label>
-          <input name="finish" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+          <input name="finish" type="text" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
         <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Wash Care</label>
-        <input name="washCare" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+        <input name="washCare" type="text" disabled={isPending} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-50" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-brand-surface1 border border-brand-accent/20">
         <div className="flex flex-col gap-4">
           <label className="font-bebas text-[24px] text-brand-accent tracking-widest uppercase">Hero Banner Image</label>
-          <p className="text-[11px] text-brand-muted -mt-3 italic">This is the \"Crazy\" main image shown at the top of the product page.</p>
+          <p className="text-[11px] text-brand-muted -mt-3 italic">This is the "Crazy" main image shown at the top of the product page.</p>
           <input type="hidden" name="heroImage" value={heroImageUrl} />
           <ImageUpload 
             value={heroImageUrl ? [heroImageUrl] : []}
@@ -171,7 +184,7 @@ export default function ProductForm({ categories }: { categories: any[] }) {
             {sizes.map(size => (
               <span key={size} className="flex items-center gap-2 bg-brand-black border border-brand-border px-3 py-1 text-brand-white text-[12px] font-inter">
                 {size}
-                <button type="button" onClick={() => removeSize(size)} className="text-brand-error hover:text-white">×</button>
+                <button type="button" onClick={() => removeSize(size)} disabled={isPending} className="text-brand-error hover:text-white disabled:opacity-50">×</button>
               </span>
             ))}
             <input 
@@ -179,8 +192,9 @@ export default function ProductForm({ categories }: { categories: any[] }) {
               value={newSize}
               onChange={(e) => setNewSize(e.target.value)}
               onKeyDown={addSize}
+              disabled={isPending}
               placeholder="Add size..." 
-              className="bg-transparent border-none outline-none text-brand-white text-[12px] font-inter w-24"
+              className="bg-transparent border-none outline-none text-brand-white text-[12px] font-inter w-24 disabled:opacity-50"
             />
           </div>
           <input type="hidden" name="sizes" value={JSON.stringify(sizes)} />
@@ -195,7 +209,7 @@ export default function ProductForm({ categories }: { categories: any[] }) {
               <span key={c.name} className="flex items-center gap-2 bg-brand-surface1 border border-brand-border px-3 py-1.5 text-brand-white text-[12px] font-inter">
                 <div className="w-3 h-3 rounded-full border border-white/20" style={{ backgroundColor: c.hex }} />
                 {c.name}
-                <button type="button" onClick={() => removeColor(c.name)} className="text-brand-muted hover:text-red-500 ml-1">×</button>
+                <button type="button" onClick={() => removeColor(c.name)} disabled={isPending} className="text-brand-muted hover:text-red-500 ml-1 disabled:opacity-50">×</button>
               </span>
             ))}
           </div>
@@ -206,7 +220,8 @@ export default function ProductForm({ categories }: { categories: any[] }) {
                 type="color" 
                 value={newColorHex}
                 onChange={(e) => setNewColorHex(e.target.value)}
-                className="w-10 h-10 bg-transparent border border-brand-border cursor-pointer p-1 rounded-none"
+                disabled={isPending}
+                className="w-10 h-10 bg-transparent border border-brand-border cursor-pointer p-1 rounded-none disabled:opacity-50"
                 title="Manually pick circle color"
               />
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-brand-white text-brand-black text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none uppercase tracking-widest font-bold">Manual Color</div>
@@ -216,13 +231,15 @@ export default function ProductForm({ categories }: { categories: any[] }) {
               value={newColorName}
               onChange={(e) => setNewColorName(e.target.value)}
               onKeyDown={addColor}
+              disabled={isPending}
               placeholder="Color name (e.g. Jet Black)..." 
-              className="flex-1 bg-brand-black border border-brand-border p-2 text-brand-white text-[13px] font-inter focus:border-brand-accent outline-none"
+              className="flex-1 bg-brand-black border border-brand-border p-2 text-brand-white text-[13px] font-inter focus:border-brand-accent outline-none disabled:opacity-50"
             />
             <button 
               type="button" 
               onClick={() => addColor()}
-              className="bg-brand-surface2 border border-brand-border px-4 text-brand-white text-[12px] hover:bg-brand-accent hover:text-brand-black transition-all"
+              disabled={isPending}
+              className="bg-brand-surface2 border border-brand-border px-4 text-brand-white text-[12px] hover:bg-brand-accent hover:text-brand-black transition-all disabled:opacity-50"
             >
               Add
             </button>
@@ -238,17 +255,26 @@ export default function ProductForm({ categories }: { categories: any[] }) {
 
       <div className="flex items-center gap-6 mt-4">
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" name="isActive" value="true" defaultChecked className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent" />
+          <input type="checkbox" name="isActive" value="true" defaultChecked disabled={isPending} className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent disabled:opacity-50" />
           <span className="font-inter text-[13px] text-brand-white">Active</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" name="isFeatured" value="true" className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent" />
+          <input type="checkbox" name="isFeatured" value="true" disabled={isPending} className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent disabled:opacity-50" />
           <span className="font-inter text-[13px] text-brand-white">Featured</span>
         </label>
       </div>
 
-      <button type="submit" className="bg-brand-white text-brand-black px-6 py-4 mt-4 font-inter text-[13px] font-bold uppercase tracking-widest hover:bg-brand-accent transition-colors self-start">
-        Create Product
+      <button 
+        type="submit" 
+        disabled={isPending}
+        className="bg-brand-white text-brand-black px-6 py-4 mt-4 font-inter text-[13px] font-bold uppercase tracking-widest hover:bg-brand-accent transition-colors self-start flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isPending ? (
+          <>
+            <Loader2 size={16} className="animate-spin" />
+            Creating...
+          </>
+        ) : "Create Product"}
       </button>
     </form>
   )

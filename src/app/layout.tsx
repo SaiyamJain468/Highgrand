@@ -67,6 +67,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { Toaster } from 'react-hot-toast';
+
 export default function RootLayout({
   children,
 }: {
@@ -75,6 +77,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${bebas.variable} ${playfair.variable} bg-brand-black text-brand-white font-inter overflow-x-hidden antialiased`}>
+        <Toaster 
+          position="bottom-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#111',
+              color: '#fff',
+              border: '1px solid #333',
+              borderRadius: '2px',
+              fontFamily: 'var(--font-inter)',
+              fontSize: '13px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em'
+            }
+          }}
+        />
         <Preloader />
         <CustomCursor />
         <GrainOverlay />

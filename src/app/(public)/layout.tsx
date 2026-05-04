@@ -5,7 +5,7 @@ import TopMarquee from "@/components/public/TopMarquee"
 import CustomCursor from "@/components/public/CustomCursor"
 import SmoothScroll from "@/components/public/SmoothScroll"
 import { Metadata } from "next"
-import { prisma } from "@/lib/prisma"
+import { prisma, getSiteSettings } from "@/lib/prisma"
 
 
 export const metadata: Metadata = {
@@ -50,12 +50,12 @@ export default async function PublicLayout({
     "whatsappNumber": ""
   };
   try {
-    const settingsPromise = prisma.siteSettings.findMany();
+    const settingsPromise = getSiteSettings();
     const timeoutPromise = new Promise<any[]>((_, reject) => 
       setTimeout(() => reject(new Error("Database connection timed out after 5 seconds")), 5000)
     );
     const settings = await Promise.race([settingsPromise, timeoutPromise]);
-    settingsMap = settings.reduce((acc, curr) => {
+    settingsMap = settings.reduce((acc: any, curr: any) => {
       acc[curr.key] = curr.value;
       return acc;
     }, {} as Record<string, string>);
@@ -64,17 +64,15 @@ export default async function PublicLayout({
   }
 
   return (
-    <SmoothScroll>
-      <div className="flex flex-col min-h-screen relative overflow-x-hidden">
-        <CustomCursor />
-        <TopMarquee announcement={settingsMap["announcementText"]} />
-        <Navbar />
-        <main className="flex-1 relative z-10 overflow-x-hidden">
-          {children}
-        </main>
-        <Footer />
-        <WhatsAppButton numberProp={settingsMap["whatsappNumber"]} />
-      </div>
-    </SmoothScroll>
+    <div className="flex flex-col min-h-screen relative overflow-x-hidden">
+      <CustomCursor />
+      <TopMarquee announcement={settingsMap["announcementText"]} />
+      <Navbar />
+      <main className="flex-1 relative z-10 overflow-x-hidden">
+        {children}
+      </main>
+      <Footer />
+      <WhatsAppButton numberProp={settingsMap["whatsappNumber"]} />
+    </div>
   )
 }

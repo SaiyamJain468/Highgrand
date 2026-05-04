@@ -48,7 +48,7 @@ export default function Preloader() {
   }, [index, loading, isExcluded, mounted])
 
   useEffect(() => {
-    const minDuration = 3500 // Increased for legibility
+    const minDuration = 1200 // Reduced for snappier performance
     const startTime = Date.now()
     
     const handleLoad = () => {
@@ -130,7 +130,7 @@ export default function Preloader() {
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
-              transition={{ duration: 2.2, ease: "easeInOut" }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
               className="h-full bg-brand-accent shadow-[0_0_15px_rgba(200,169,110,0.6)]"
             />
           </div>

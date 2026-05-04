@@ -5,59 +5,75 @@ import { authOptions } from "@/lib/auth"
 import AnimatedList from "./AnimatedList"
 import { prisma } from "@/lib/prisma"
 
-export default async function FeaturedProducts() {
-  let isReseller = false;
-  try {
-    const session = await getServerSession(authOptions)
-    isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
-  } catch (error) {
-    console.error("Auth session fetch failed in FeaturedProducts", error);
+export default async function FeaturedProducts({ 
+  productsProp, 
+  isResellerProp 
+}: { 
+  productsProp?: any[], 
+  isResellerProp?: boolean 
+}) {
+  let isReseller = isResellerProp ?? false;
+  
+  if (isResellerProp === undefined) {
+    try {
+      const session = await getServerSession(authOptions)
+      isReseller = session?.user?.role === "RESELLER" && session?.user?.status === "APPROVED"
+    } catch (error) {
+      console.error("Auth session fetch failed in FeaturedProducts", error);
+    }
   }
 
-  let productsData = await prisma.product.findMany({
-    where: { isActive: true, isFeatured: true },
-    orderBy: { displayOrder: "asc" },
-    include: { category: true },
-    take: 8
-  })
+  let products = productsProp;
 
-  // If no featured products, try showing any active products
-  if (productsData.length === 0) {
-    productsData = await prisma.product.findMany({
-      where: { isActive: true },
-      orderBy: { createdAt: "desc" },
+  if (!products) {
+    let productsData = await prisma.product.findMany({
+      where: { isActive: true, isFeatured: true },
+      orderBy: { displayOrder: "asc" },
       include: { category: true },
       take: 8
     })
+
+    // If no featured products, try showing any active products
+    if (productsData.length === 0) {
+      productsData = await prisma.product.findMany({
+        where: { isActive: true },
+        orderBy: { createdAt: "desc" },
+        include: { category: true },
+        take: 8
+      })
+    }
+    products = productsData;
   }
 
-  // Fallback to demo data if DB is empty
-  const products = productsData.length > 0 ? productsData : [
-    { 
-      id: '1', name: 'Premium Oversized T-Shirt - Black', slug: 'premium-oversized-black', 
-      images: '["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
-    },
-    { 
-      id: '2', name: 'Premium Oversized T-Shirt - White', slug: 'premium-oversized-white', 
-      images: '["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
-    },
-    { 
-      id: '3', name: 'Vintage Wash Tee - Olive', slug: 'vintage-wash-olive', 
-      images: '["https://images.unsplash.com/photo-1618354691438-25bc04584c23?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Acid Wash' }, gsm: 240, composition: '100% Cotton', 
-      mrpLabel: '₹999', wholesaleLabel: '₹550', hoverImage: null 
-    },
-    { 
-      id: '4', name: 'Heavyweight Boxy Fit - Navy', slug: 'boxy-fit-navy', 
-      images: '["https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Premium Boxy' }, gsm: 260, composition: '100% Cotton', 
-      mrpLabel: '₹1200', wholesaleLabel: '₹680', hoverImage: null 
-    }
-  ]
+  // Fallback to demo data if still empty
+  if (!products || products.length === 0) {
+    products = [
+      { 
+        id: '1', name: 'Premium Oversized T-Shirt - Black', slug: 'premium-oversized-black', 
+        images: '["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"]', 
+        category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
+        mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
+      },
+      { 
+        id: '2', name: 'Premium Oversized T-Shirt - White', slug: 'premium-oversized-white', 
+        images: '["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop"]', 
+        category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
+        mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
+      },
+      { 
+        id: '3', name: 'Vintage Wash Tee - Olive', slug: 'vintage-wash-olive', 
+        images: '["https://images.unsplash.com/photo-1618354691438-25bc04584c23?q=80&w=600&auto=format&fit=crop"]', 
+        category: { name: 'Acid Wash' }, gsm: 240, composition: '100% Cotton', 
+        mrpLabel: '₹999', wholesaleLabel: '₹550', hoverImage: null 
+      },
+      { 
+        id: '4', name: 'Heavyweight Boxy Fit - Navy', slug: 'boxy-fit-navy', 
+        images: '["https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop"]', 
+        category: { name: 'Premium Boxy' }, gsm: 260, composition: '100% Cotton', 
+        mrpLabel: '₹1200', wholesaleLabel: '₹680', hoverImage: null 
+      }
+    ]
+  }
 
   return (
     <section className="bg-brand-black py-24 md:py-40 relative overflow-hidden border-y border-brand-border/30">

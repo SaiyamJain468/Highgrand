@@ -1,21 +1,27 @@
 "use client"
-
+ 
 import { useTransition } from "react"
 import { approveReseller, rejectReseller } from "./actions"
 import { Check, X, Loader2 } from "lucide-react"
-
+import toast from "react-hot-toast"
+ 
 interface Props {
   userId: string
-  currentStatus: "PENDING" | "APPROVED" | "REJECTED"
+  currentStatus: string
 }
 
-export function ResellerActionButtons({ userId, currentStatus }: Props) {
+export default function ResellerActionButtons({ userId, currentStatus }: Props) {
   const [isPending, startTransition] = useTransition()
 
   const handleApprove = () => {
     if (confirm("Authorize this reseller? This will grant access to wholesale pricing and send a confirmation email.")) {
       startTransition(async () => {
-        await approveReseller(userId)
+        const res = await approveReseller(userId)
+        if (res.success) {
+          toast.success("Reseller authorized successfully")
+        } else {
+          toast.error(res.error || "Failed to authorize")
+        }
       })
     }
   }
@@ -23,7 +29,12 @@ export function ResellerActionButtons({ userId, currentStatus }: Props) {
   const handleReject = () => {
     if (confirm("Deny this application? The user will be notified of the rejection.")) {
       startTransition(async () => {
-        await rejectReseller(userId)
+        const res = await rejectReseller(userId)
+        if (res.success) {
+          toast.error("Application denied")
+        } else {
+          toast.error(res.error || "Failed to deny")
+        }
       })
     }
   }
