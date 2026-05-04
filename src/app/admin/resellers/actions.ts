@@ -23,10 +23,12 @@ export async function approveReseller(id: string) {
       html: getApprovalEmailTemplate(user.name)
     })
 
-  } catch (error) {
-    throw new Error()
+    revalidatePath("/admin/resellers")
+    return { success: true }
+  } catch (error: any) {
+    console.error("APPROVE RESELLER ERROR:", error)
+    return { success: false, error: error.message || "Failed to approve reseller" }
   }
-  revalidatePath("/admin/resellers")
 }
 
 export async function rejectReseller(id: string) {
@@ -45,9 +47,11 @@ export async function rejectReseller(id: string) {
       subject: "Highgrand Reseller Application Update",
       html: getRejectionEmailTemplate(user.name)
     })
-  } catch (error) {
+
+    revalidatePath("/admin/resellers")
+    return { success: true }
+  } catch (error: any) {
     console.error("REJECT RESELLER ERROR:", error)
-    throw new Error("Failed to reject reseller")
+    return { success: false, error: error.message || "Failed to reject reseller" }
   }
-  revalidatePath("/admin/resellers")
 }
