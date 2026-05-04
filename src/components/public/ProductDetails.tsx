@@ -94,6 +94,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                   fill
                   priority
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-110" 
+                  sizes="(max-width: 1024px) 100vw, 60vw"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-brand-black/20 to-transparent pointer-events-none" />
@@ -117,6 +118,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                     alt={`detail-${idx}`}
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    sizes="(max-width: 1024px) 50vw, 30vw"
                   />
                   <div className="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition-colors pointer-events-none z-10" />
                 </motion.div>

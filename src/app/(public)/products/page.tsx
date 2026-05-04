@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
@@ -80,18 +81,22 @@ export default async function ProductsPage({
                 <Link key={product.id} href={`/products/${product.slug}`} className="group block bg-brand-surface1 border border-brand-border rounded-[2px] transition-colors hover:border-brand-borderHover">
                   <div className="aspect-[4/5] bg-brand-surface2 overflow-hidden relative">
                     {/* Primary Image */}
-                    <img 
+                    <Image 
                       src={image} 
                       alt={product.name} 
-                      className={`w-full h-full object-cover transition-all duration-[1000ms] ease-out ${product.hoverImage ? 'group-hover:opacity-0 group-hover:scale-110' : 'group-hover:scale-[1.04]'}`} 
+                      fill
+                      className={`object-cover transition-all duration-[1000ms] ease-out ${product.hoverImage ? 'group-hover:opacity-0 group-hover:scale-110' : 'group-hover:scale-[1.04]'}`} 
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     
                     {/* Hover Image */}
                     {product.hoverImage && (
-                      <img 
+                      <Image 
                         src={product.hoverImage} 
                         alt={`${product.name} Hover`} 
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1000ms] ease-out" 
+                        fill
+                        className="absolute inset-0 object-cover opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1000ms] ease-out" 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     )}
                   </div>
