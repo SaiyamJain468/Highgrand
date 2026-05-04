@@ -26,11 +26,24 @@ Your admin panel needs a place to store uploaded images (banners, product images
 5. Get your "Cloud Name" from the Cloudinary dashboard.
 6. Add these to your `.env` file (or Hostinger environment variables):
 ```env
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your_cloud_name_here"
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="djxhuaqpc"
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="highgrand_uploads"
 ```
 
-## STEP 4: Upload Code to Hostinger
+## STEP 4: Setup SMTP (For Automated Emails)
+To send Welcome and Approval emails automatically to your resellers, you need to configure an SMTP service. The easiest way is to use a free service like Resend, SendGrid, or your Hostinger Webmail.
+1. Create an email account in Hostinger (e.g., `info@highgrand.in`).
+2. Get your SMTP details from Hostinger (Host, Port, User, Password).
+3. Add these to your `.env` file (or Hostinger environment variables):
+```env
+SMTP_HOST="smtp.hostinger.com"
+SMTP_PORT="465"
+SMTP_USER="admin@highgrand.in"
+SMTP_PASS="Highgrand1@"
+SMTP_FROM="admin@highgrand.in"
+```
+
+## STEP 5: Upload Code to Hostinger
 1. Push your final code to GitHub (`SaiyamJain468/Highgrand`).
 2. Go to Hostinger -> Websites -> highgrand.in -> Advanced -> GIT.
 3. Deploy your repository.
@@ -39,7 +52,7 @@ NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="highgrand_uploads"
 6. Run the build command: `npm install && npx prisma generate && npm run build`.
 7. Start the app: `npm run start`.
 
-## STEP 5: Create Your Admin Account
+## STEP 6: Create Your Admin Account
 Once the website is live on `highgrand.in`:
 1. Go to `https://highgrand.in/register` (or whatever your sign-up page is) and create an account for yourself (e.g., `saiyam@highgrand.in`).
 2. Go to Hostinger -> Databases -> phpMyAdmin.
@@ -47,7 +60,7 @@ Once the website is live on `highgrand.in`:
 4. Open the `User` table.
 5. Find your newly created account and change the `role` column from `USER` to `ADMIN`.
 
-## STEP 6: Populate the Site (The Fun Part)
+## STEP 7: Populate the Site (The Fun Part)
 Now that you are an Admin, log into the live site and go to `https://highgrand.in/admin`.
 1. **Settings**: Go to Settings and update your WhatsApp number and Top Marquee text.
 2. **Banners**: Upload your 3 main Hero banners (Desktop and Mobile versions).

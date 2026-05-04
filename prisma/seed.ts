@@ -54,31 +54,7 @@ async function main() {
     })
   }
 
-  // 1 sample product
-  await prisma.product.upsert({
-    where: { slug: 'premium-oversized-black' },
-    update: {},
-    create: {
-      name: 'Premium Oversized T-Shirt - Black',
-      slug: 'premium-oversized-black',
-      shortDescription: 'Classic black oversized fit',
-      longDescription: 'Our signature oversized fit crafted with premium combed cotton.',
-      categoryId: oversized.id,
-      images: JSON.stringify(['https://via.placeholder.com/600x800']),
-      mrpLabel: '₹850/piece',
-      wholesaleLabel: '₹420/piece',
-      moqNote: 'No minimum order',
-      gsm: 220,
-      composition: '100% Super Combed Cotton',
-      weave: 'Single Jersey',
-      finish: 'Bio-washed',
-      washCare: 'Machine wash cold. Do not bleach. Tumble dry low.',
-      sizes: JSON.stringify(['S', 'M', 'L', 'XL']),
-      colors: JSON.stringify([{ name: 'Black', hex: '#000000', image: '' }]),
-      isActive: true,
-      isFeatured: true,
-    },
-  })
+  // Products are no longer seeded by default, use the admin panel.
 
   // SiteSettings
   const settings = [

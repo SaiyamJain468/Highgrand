@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+import { sendEmail } from "@/lib/email"
+import { getWelcomeEmailTemplate } from "@/lib/emailTemplates"
 
 export async function POST(req: Request) {
   try {
@@ -38,7 +40,12 @@ export async function POST(req: Request) {
       }
     })
 
-    // Phase 7: Emails will be sent here later
+    // Send Welcome Email
+    await sendEmail({
+      to: email,
+      subject: "Welcome to Highgrand - Application Received",
+      html: getWelcomeEmailTemplate(name)
+    })
 
     return NextResponse.json({ success: true, user: { id: user.id } })
   } catch (error) {

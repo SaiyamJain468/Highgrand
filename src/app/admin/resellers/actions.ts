@@ -3,15 +3,26 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
+import { sendEmail } from "@/lib/email"
+import { getApprovalEmailTemplate } from "@/lib/emailTemplates"
+
 export async function approveReseller(id: string) {
   try {
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: { id },
       data: {
         role: "RESELLER",
         status: "APPROVED"
       }
     })
+
+    // Send Approval Email
+    await sendEmail({
+      to: user.email,
+      subject: "Highgrand Reseller Application Approved",
+      html: getApprovalEmailTemplate(user.name)
+    })
+
   } catch (error) {
     throw new Error()
   }

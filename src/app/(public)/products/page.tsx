@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 
 export const revalidate = 60; // Enable ISR, regenerate every 60 seconds
 
@@ -15,28 +16,21 @@ export default async function ProductsPage({
   const searchParamsResolved = await searchParams
   const activeCategoryParam = searchParamsResolved.category || 'all'
 
-  const categories = [
-    { id: '1', name: 'Oversized T-Shirts', slug: 'oversized-tshirts' },
-    { id: '2', name: 'Premium Basics', slug: 'premium-basics' },
-  ]
-  let products: any[] = [
-    { 
-      id: '1', name: 'Premium Oversized T-Shirt - Black', slug: 'premium-oversized-black', 
-      images: '["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Oversized T-Shirts', slug: 'oversized-tshirts' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850/piece', wholesaleLabel: '₹420/piece' 
-    },
-    { 
-      id: '2', name: 'Premium Oversized T-Shirt - White', slug: 'premium-oversized-white', 
-      images: '["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop"]', 
-      category: { name: 'Oversized T-Shirts', slug: 'oversized-tshirts' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850/piece', wholesaleLabel: '₹420/piece' 
-    }
-  ]
+  const categories = await prisma.category.findMany({
+    where: { status: "ACTIVE" },
+    orderBy: { displayOrder: 'asc' }
+  })
   
+  const whereClause: any = { isActive: true }
   if (activeCategoryParam !== 'all') {
-    products = products.filter(p => p.category.slug === activeCategoryParam)
+    whereClause.category = { slug: activeCategoryParam }
   }
+
+  const products = await prisma.product.findMany({
+    where: whereClause,
+    include: { category: true },
+    orderBy: { createdAt: 'desc' }
+  })
 
   return (
     <div className="bg-brand-black min-h-screen pt-32 pb-24">

@@ -15,13 +15,36 @@ export default function RegisterPage() {
     businessName: "", businessType: "SHOP", city: "", state: "", monthlyVolume: "50-100"
   })
 
-  // Simulated submit
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  // Real submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // A fetch to /api/auth/register would go here
-    setTimeout(() => {
+    setLoading(true)
+    setError("")
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || "Registration failed")
+        setLoading(false)
+        return
+      }
+
       setSubmitted(true)
-    }, 800)
+    } catch (err) {
+      setError("An unexpected error occurred.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const slideVariants = {
@@ -136,6 +159,11 @@ export default function RegisterPage() {
                 <h3 className="font-bebas text-[24px] text-brand-white uppercase mb-6">Review Application</h3>
                 
                 <div className="bg-brand-black border border-brand-border p-4 mb-8">
+                  {error && (
+                    <div className="bg-[#1A0A0A] border border-brand-error text-brand-error text-[13px] font-inter p-3 text-center mb-4">
+                      {error}
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 gap-y-4 text-[13px] font-inter">
                     <div><span className="text-brand-muted block text-[10px] uppercase mb-1">Name</span><span className="text-white">{formData.name}</span></div>
                     <div><span className="text-brand-muted block text-[10px] uppercase mb-1">Email</span><span className="text-white">{formData.email}</span></div>

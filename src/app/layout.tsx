@@ -10,6 +10,7 @@ const bebas = Bebas_Neue({ subsets: ['latin'], variable: '--font-bebas', weight:
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', style: 'italic' });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://highgrand.in'),
   title: 'HIGHGRAND — Premium Apparel Manufacturer',
   description: 'Wholesale oversized apparel for resellers, boutiques & online brands across India.',
 };

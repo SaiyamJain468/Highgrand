@@ -1,8 +1,29 @@
 "use client"
 
-import { Package, Download } from "lucide-react"
+import { Package, Download, Clock } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 export default function ResellerDashboard() {
+  const { data: session, status } = useSession()
+
+  if (status === "loading") {
+    return <div className="p-8 text-brand-muted">Loading...</div>
+  }
+
+  const userStatus = session?.user?.status
+
+  if (userStatus === "PENDING") {
+    return (
+      <div className="p-8 lg:p-12 h-full flex flex-col items-center justify-center text-center">
+        <Clock size={48} className="text-brand-accent mb-6" />
+        <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none mb-4">Application Under Review</h1>
+        <p className="font-inter text-[14px] text-brand-muted max-w-md">
+          Thank you for applying to be a Highgrand wholesale partner. Our team is currently reviewing your business profile. You will receive an email once approved.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="p-8 lg:p-12">
       <div className="mb-10">

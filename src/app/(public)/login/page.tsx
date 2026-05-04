@@ -17,12 +17,6 @@ export default function LoginPage() {
     setLoading(true)
     setError("")
 
-    // Simulated auth check path mapping for mock 
-    if(email === "admin@highgrand.in") {
-       router.push("/admin")
-       return;
-    }
-    
     // Simulate real auth call
     const res = await signIn("credentials", {
       email,
@@ -34,7 +28,15 @@ export default function LoginPage() {
       setError("Invalid email or password.")
       setLoading(false)
     } else {
-      router.push("/reseller")
+      // Fetch session to determine role and redirect
+      const sessionRes = await fetch("/api/auth/session")
+      const sessionData = await sessionRes.json()
+      
+      if (sessionData?.user?.role === "ADMIN") {
+        router.push("/admin")
+      } else {
+        router.push("/reseller")
+      }
     }
   }
 

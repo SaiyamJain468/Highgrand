@@ -1,7 +1,21 @@
+"use client"
+
 import { createCategory } from "../actions"
 import Link from "next/link"
+import ImageUpload from "@/components/admin/ImageUpload"
+import { useState } from "react"
 
 export default function NewCategory() {
+  const [imageUrl, setImageUrl] = useState<string[]>([])
+
+  const handleImageChange = (url: string) => {
+    setImageUrl([url])
+  }
+
+  const handleImageRemove = (url: string) => {
+    setImageUrl([])
+  }
+
   return (
     <div className="p-8 lg:p-12 max-w-3xl">
       <div className="mb-10">
@@ -29,9 +43,14 @@ export default function NewCategory() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Image URL</label>
-            <input name="image" type="text" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" placeholder="Cloudinary URL or any image link" />
-            <p className="text-[11px] text-brand-muted">For now, paste the Cloudinary URL. (CldUploadWidget can be integrated here later).</p>
+            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Category Image</label>
+            <input type="hidden" name="image" value={imageUrl[0] || ""} />
+            <ImageUpload 
+              value={imageUrl} 
+              onChange={handleImageChange} 
+              onRemove={handleImageRemove}
+              maxFiles={1} 
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-6">
