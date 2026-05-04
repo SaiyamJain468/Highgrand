@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, X, CheckCircle2, ShoppingBag, MessageSquare } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import ProductModularContent from "./ProductModularContent"
 
 export default function ProductDetails({ product, isReseller, isPending }: { product: any, isReseller: boolean, isPending: boolean }) {
@@ -35,8 +36,35 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
     return colorMap[name] || "#333333";
   };
 
+  // Structured Data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": images,
+    "description": product.shortDescription,
+    "brand": {
+      "@type": "Brand",
+      "name": "Highgrand"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "INR",
+      "lowPrice": product.wholesaleLabel?.replace(/[^0-9]/g, '') || "0",
+      "highPrice": product.mrpLabel?.replace(/[^0-9]/g, '') || "0",
+      "offerCount": "1",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <div className="bg-brand-black min-h-screen text-brand-white selection:bg-brand-accent selection:text-brand-black">
+      {/* Schema.org JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="default-container pt-32 pb-24">
         
         {/* Navigation / Breadcrumb */}
@@ -59,13 +87,17 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
               onMouseLeave={() => setIsHovered(false)}
               className="aspect-[4/5] bg-brand-surface2 border border-brand-border overflow-hidden relative group cursor-zoom-in"
             >
-              <img 
-                src={currentHero} 
-                alt={product.name} 
-                className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" 
-              />
+              {currentHero && (
+                <Image 
+                  src={currentHero} 
+                  alt={product.name} 
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-110" 
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-brand-black/20 to-transparent pointer-events-none" />
-              <div className="absolute bottom-6 left-6 px-4 py-2 bg-brand-black/60 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-widest font-bold">
+              <div className="absolute bottom-6 left-6 px-4 py-2 bg-brand-black/60 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-widest font-bold z-10">
                 Main Perspective
               </div>
             </motion.div>
@@ -80,8 +112,13 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                   viewport={{ once: true }}
                   className="aspect-[4/5] bg-brand-surface2 border border-brand-border overflow-hidden relative group"
                 >
-                  <img src={img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={`detail-${idx}`} />
-                  <div className="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition-colors pointer-events-none" />
+                  <Image 
+                    src={img} 
+                    alt={`detail-${idx}`}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition-colors pointer-events-none z-10" />
                 </motion.div>
               ))}
             </div>
@@ -120,7 +157,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                     </div>
                   </div>
                 ) : isPending ? (
-                  <div className="p-5 border border-brand-accent/20 bg-brand-accent/5 flex items-center gap-4">
+                  <div className="p-5 border border-brand-accent/20 bg-brand-accent/5 flex items-center gap-4 relative z-10">
                     <div className="w-10 h-10 rounded-full bg-brand-accent/10 flex items-center justify-center text-brand-accent">
                       <CheckCircle2 size={20} />
                     </div>
@@ -162,6 +199,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                       
                       return (
                         <button 
+                          type="button"
                           key={name}
                           onClick={() => {
                             setActiveColor(name);
@@ -182,11 +220,11 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                 <div className="space-y-6 border-t border-brand-border pt-10">
                   <div className="flex items-center justify-between">
                     <p className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-[0.3em]">Precision Fit</p>
-                    <button className="text-[10px] text-brand-accent uppercase tracking-widest hover:text-white transition-colors">Size Guide</button>
+                    <button type="button" className="text-[10px] text-brand-accent uppercase tracking-widest hover:text-white transition-colors">Size Guide</button>
                   </div>
                   <div className="grid grid-cols-5 gap-2">
                     {sizes.map((s: string) => (
-                      <button key={s} className="h-12 border border-brand-border flex items-center justify-center font-inter text-[13px] hover:border-brand-accent hover:text-brand-accent transition-all group relative overflow-hidden">
+                      <button type="button" key={s} className="h-12 border border-brand-border flex items-center justify-center font-inter text-[13px] hover:border-brand-accent hover:text-brand-accent transition-all group relative overflow-hidden">
                         <span className="relative z-10">{s}</span>
                         <div className="absolute inset-0 bg-brand-accent/5 translate-y-full group-hover:translate-y-0 transition-transform" />
                       </button>
@@ -206,6 +244,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
                   Request via WhatsApp
                 </a>
                 <button 
+                  type="button"
                   onClick={() => setInquiryModalOpen(true)}
                   className="flex items-center justify-center gap-3 border border-brand-white text-brand-white py-5 font-inter text-[13px] font-medium uppercase tracking-[0.2em] hover:bg-brand-white hover:text-brand-black transition-all"
                 >
@@ -258,7 +297,7 @@ export default function ProductDetails({ product, isReseller, isPending }: { pro
               className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-brand-surface1 border border-brand-border z-[101] p-12 overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-48 h-48 bg-brand-accent/5 blur-[80px] -mr-24 -mt-24" />
-              <button className="absolute top-6 right-6 text-brand-muted hover:text-white transition-colors" onClick={() => setInquiryModalOpen(false)}><X size={24} /></button>
+              <button type="button" className="absolute top-6 right-6 text-brand-muted hover:text-white transition-colors" onClick={() => setInquiryModalOpen(false)}><X size={24} /></button>
               
               <h3 className="font-bebas text-[42px] text-brand-white uppercase leading-none mb-2">Bulk Inquiry</h3>
               <p className="font-inter text-[12px] text-brand-muted uppercase tracking-[0.3em] mb-10 border-l-2 border-brand-accent pl-4">Direct Procurement Desk</p>

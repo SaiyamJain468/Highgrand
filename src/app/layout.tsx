@@ -11,8 +11,57 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://highgrand.in'),
-  title: 'HIGHGRAND — Premium Apparel Manufacturer',
-  description: 'Wholesale oversized apparel for resellers, boutiques & online brands across India.',
+  title: {
+    default: 'HIGHGRAND — Premium Apparel Manufacturer',
+    template: '%s | HIGHGRAND'
+  },
+  description: 'Industrial-grade wholesale oversized apparel for resellers, boutiques & online brands across India. Premium quality, expert craftsmanship.',
+  keywords: ['oversized t-shirts', 'wholesale apparel', 'clothing manufacturer India', 'premium streetwear', 'reseller clothing'],
+  authors: [{ name: 'Highgrand HQ' }],
+  creator: 'Highgrand Manufacturing',
+  publisher: 'Highgrand HQ',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://highgrand.in',
+    siteName: 'HIGHGRAND',
+    title: 'HIGHGRAND — Premium Apparel Manufacturer',
+    description: 'Wholesale oversized apparel for resellers & boutiques across India.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'HIGHGRAND Premium Manufacturing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HIGHGRAND — Premium Apparel Manufacturer',
+    description: 'Wholesale oversized apparel for resellers & boutiques across India.',
+    images: ['/og-image.png'],
+    creator: '@highgrand_hq',
+  },
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
