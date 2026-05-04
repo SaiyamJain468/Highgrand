@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import SearchFilter from "@/components/public/SearchFilter"
 
 export default function ProductsPageClient({ 
@@ -16,7 +16,7 @@ export default function ProductsPageClient({
   activeCategory: string,
   isReseller: boolean
 }) {
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -26,9 +26,16 @@ export default function ProductsPageClient({
     }
   }
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.5, 
+        ease: [0.33, 1, 0.68, 1] // Professional cubic-bezier for smooth reveal
+      } 
+    }
   }
 
   return (
