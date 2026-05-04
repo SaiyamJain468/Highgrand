@@ -3,7 +3,7 @@ import Link from "next/link"
 import { AdminHeader } from "@/components/admin/AdminHeader"
 import { AdminTable, AdminTableRow, AdminTableCell } from "@/components/admin/AdminTable"
 import { AdminBadge } from "@/components/admin/AdminBadge"
-import { ResellerActionButtons } from "./ResellerActionButtons"
+import ResellerActionButtons from "./ResellerActionButtons"
 import { Briefcase, MapPin, Globe } from "lucide-react"
 
 export default async function AdminResellers({ 
