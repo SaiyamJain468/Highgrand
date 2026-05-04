@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { usePathname } from "next/navigation"
 
 const greetings = [
   "Hello",          // English
@@ -25,23 +26,26 @@ const greetings = [
 ]
 
 export default function Preloader() {
+  const pathname = usePathname()
   const [index, setIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
-
   useEffect(() => {
     setMounted(true)
   }, [])
 
+
+  const isExcluded = pathname?.startsWith("/admin") || pathname?.startsWith("/reseller") || pathname === "/login" || pathname === "/register";
+
   useEffect(() => {
-    if (!loading && index === 0) return // Exit safety
+    if (!mounted || isExcluded || !loading && index === 0) return // Exit safety
 
     const timeout = setTimeout(() => {
       setIndex(prev => (prev + 1) % greetings.length)
     }, index === 0 ? 1200 : 400) // Solid first impression, then steady pace
 
     return () => clearTimeout(timeout)
-  }, [index, loading])
+  }, [index, loading, isExcluded, mounted])
 
   useEffect(() => {
     const minDuration = 3500 // Increased for legibility
@@ -63,6 +67,8 @@ export default function Preloader() {
       return () => window.removeEventListener("load", handleLoad)
     }
   }, [])
+
+  if (!mounted || isExcluded) return null
 
   return (
     <AnimatePresence>

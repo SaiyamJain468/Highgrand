@@ -78,8 +78,22 @@ export default async function ProductsPage({
 
               return (
                 <Link key={product.id} href={`/products/${product.slug}`} className="group block bg-brand-surface1 border border-brand-border rounded-[2px] transition-colors hover:border-brand-borderHover">
-                  <div className="aspect-[3/4] bg-brand-surface2 overflow-hidden relative">
-                    <img src={image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 ease-smooth group-hover:scale-[1.04]" />
+                  <div className="aspect-[4/5] bg-brand-surface2 overflow-hidden relative">
+                    {/* Primary Image */}
+                    <img 
+                      src={image} 
+                      alt={product.name} 
+                      className={`w-full h-full object-cover transition-all duration-[1000ms] ease-out ${product.hoverImage ? 'group-hover:opacity-0 group-hover:scale-110' : 'group-hover:scale-[1.04]'}`} 
+                    />
+                    
+                    {/* Hover Image */}
+                    {product.hoverImage && (
+                      <img 
+                        src={product.hoverImage} 
+                        alt={`${product.name} Hover`} 
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1000ms] ease-out" 
+                      />
+                    )}
                   </div>
                   
                   <div className="p-5 flex flex-col gap-3">

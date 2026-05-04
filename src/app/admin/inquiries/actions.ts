@@ -14,3 +14,14 @@ export async function markAsRead(id: string) {
   }
   revalidatePath("/admin/inquiries")
 }
+
+export async function deleteInquiry(id: string) {
+  try {
+    await prisma.inquiry.delete({
+      where: { id }
+    })
+  } catch (error) {
+    throw new Error()
+  }
+  revalidatePath("/admin/inquiries")
+}

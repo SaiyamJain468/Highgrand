@@ -14,12 +14,22 @@ export default async function FeaturedProducts() {
     console.error("Auth session fetch failed in FeaturedProducts", error);
   }
 
-  const productsData = await prisma.product.findMany({
+  let productsData = await prisma.product.findMany({
     where: { isActive: true, isFeatured: true },
     orderBy: { displayOrder: "asc" },
     include: { category: true },
     take: 8
   })
+
+  // If no featured products, try showing any active products
+  if (productsData.length === 0) {
+    productsData = await prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "desc" },
+      include: { category: true },
+      take: 8
+    })
+  }
 
   // Fallback to demo data if DB is empty
   const products = productsData.length > 0 ? productsData : [
@@ -81,14 +91,27 @@ export default async function FeaturedProducts() {
             <Link key={product.id} href={`/products/${product.slug}`} className="group min-w-[75vw] sm:min-w-[360px] md:min-w-[420px] snap-start block bg-[#080808] border border-brand-border/30 rounded-[2px] transition-all duration-500 hover:border-brand-accent/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative overflow-hidden h-full">
               <div className="aspect-[4/5] overflow-hidden relative bg-brand-surface2">
                 <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                
+                {/* Primary Image */}
                 <Image 
                   src={image} 
                   alt={product.name} 
                   fill
                   priority={i === 0}
-                  className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.05]" 
+                  className={`object-cover transition-all duration-[1000ms] ease-out ${product.hoverImage ? 'group-hover:opacity-0 group-hover:scale-110' : 'group-hover:scale-105'}`} 
                   sizes="(max-width: 768px) 75vw, (max-width: 1200px) 420px, 420px"
                 />
+
+                {/* Hover Reveal Image */}
+                {product.hoverImage && (
+                  <Image 
+                    src={product.hoverImage} 
+                    alt={`${product.name} Hover`} 
+                    fill
+                    className="object-cover opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1000ms] ease-out" 
+                    sizes="(max-width: 768px) 75vw, (max-width: 1200px) 420px, 420px"
+                  />
+                )}
                 
                 <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
                   <span className="bg-brand-black/80 backdrop-blur-md border border-brand-border/50 px-3 py-1.5 flex items-center gap-2 font-inter text-[10px] font-bold uppercase tracking-[0.1em] text-brand-white">

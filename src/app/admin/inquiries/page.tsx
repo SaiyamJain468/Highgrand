@@ -1,10 +1,19 @@
-import { MessageSquare } from "lucide-react"
+import { MessageSquare, Calendar, Phone, Mail, Box, Trash2, CheckCircle2 } from "lucide-react"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { markAsRead } from "./actions"
+import DeleteButton from "./DeleteButton"
+import { AdminHeader } from "@/components/admin/AdminHeader"
+import { AdminTable, AdminTableRow, AdminTableCell } from "@/components/admin/AdminTable"
+import { AdminBadge } from "@/components/admin/AdminBadge"
 
-export default async function AdminInquiries({ searchParams }: { searchParams: { tab?: string } }) {
-  const currentTab = searchParams.tab || "unread"
+export default async function AdminInquiries({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ tab?: string }> 
+}) {
+  const { tab } = await searchParams
+  const currentTab = (tab || "unread").toLowerCase()
 
   const inquiries = await prisma.inquiry.findMany({
     where: {
@@ -15,81 +24,120 @@ export default async function AdminInquiries({ searchParams }: { searchParams: {
 
   const unreadCount = await prisma.inquiry.count({ where: { status: "NEW" } })
 
+  const tabs = [
+    { label: "New Inquiries", tab: "unread", count: unreadCount },
+    { label: "Communication Archive", tab: "all" },
+  ]
+
   return (
-    <div className="p-8 lg:p-12">
-      <div className="mb-10">
-        <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none">Inquiries</h1>
-        <p className="font-inter text-[14px] text-brand-muted mt-2">Manage incoming product inquiries and general contact form submissions.</p>
+    <div className="p-8 lg:p-12 max-w-[1600px] mx-auto">
+      <AdminHeader 
+        title="Command Center: Inbox" 
+        subtitle="Process direct customer inquiries, handle product-specific questions, and manage lead conversions."
+        breadcrumbs={[{ label: "Inquiries" }]}
+      />
+
+      {/* Modern Tabs with Counters */}
+      <div className="flex gap-12 mb-10 border-b border-brand-border/30">
+        {tabs.map((tabItem) => (
+          <Link 
+            key={tabItem.tab}
+            href={`/admin/inquiries?tab=${tabItem.tab}`} 
+            className={`font-inter text-[11px] font-bold uppercase tracking-[0.25em] pb-5 transition-all relative flex items-center gap-3 ${
+              currentTab === tabItem.tab 
+                ? 'text-brand-accent after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-accent' 
+                : 'text-brand-muted hover:text-brand-white'
+            }`}
+          >
+            {tabItem.label}
+            {tabItem.count !== undefined && tabItem.count > 0 && (
+              <span className="bg-brand-accent text-brand-black text-[9px] px-1.5 py-0.5 rounded-full font-black">
+                {tabItem.count}
+              </span>
+            )}
+          </Link>
+        ))}
       </div>
 
-      <div className="flex gap-8 border-b border-brand-border mb-8">
-        <Link 
-          href="/admin/inquiries?tab=unread" 
-          className={`font-inter text-[13px] uppercase tracking-widest pb-4 border-b-2 transition-colors ${currentTab === 'unread' ? 'text-brand-accent border-brand-accent' : 'text-brand-muted border-transparent hover:text-brand-white'}`}
-        >
-          Unread ({unreadCount})
-        </Link>
-        <Link 
-          href="/admin/inquiries?tab=all" 
-          className={`font-inter text-[13px] uppercase tracking-widest pb-4 border-b-2 transition-colors ${currentTab === 'all' ? 'text-brand-accent border-brand-accent' : 'text-brand-muted border-transparent hover:text-brand-white'}`}
-        >
-          All Inquiries
-        </Link>
-      </div>
+      <AdminTable 
+        headers={["Engagement Metadata", "Client Intelligence", "Context", "Engagement State", "Operational Control"]}
+        emptyMessage={`The ${currentTab} inbox is currently clear.`}
+      >
+        {inquiries.map((inquiry) => (
+          <AdminTableRow key={inquiry.id} className={inquiry.status === 'NEW' ? "!bg-brand-accent/[0.02]" : "opacity-60"}>
+            <AdminTableCell>
+              <div className="flex items-center gap-3">
+                <Calendar size={14} className="text-brand-muted" />
+                <span className="font-inter text-[13px] text-brand-white font-medium">{new Date(inquiry.createdAt).toLocaleDateString()}</span>
+              </div>
+            </AdminTableCell>
 
-      {inquiries.length === 0 ? (
-        <div className="border border-brand-border border-dashed p-16 text-center bg-brand-surface1/30">
-          <MessageSquare size={40} className="mx-auto text-brand-disabled mb-4" />
-          <h3 className="font-inter font-medium text-[16px] text-brand-muted">Inbox Empty</h3>
-          <p className="font-inter text-[13px] text-brand-disabled mt-2 mb-6">No {currentTab === 'unread' ? 'new' : ''} inquiries at the moment.</p>
-        </div>
-      ) : (
-        <div className="bg-brand-surface1 border border-brand-border">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-brand-surface2 border-b border-brand-border">
-                  <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Date</th>
-                  <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Contact</th>
-                  <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Product</th>
-                  <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Message</th>
-                  <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {inquiries.map((inquiry) => (
-                  <tr key={inquiry.id} className={`border-b border-brand-border transition-colors ${inquiry.status !== 'NEW' ? 'opacity-60 hover:bg-brand-surface2/50' : 'bg-brand-surface2/20 hover:bg-brand-surface2/80'}`}>
-                    <td className="py-4 px-6 font-inter text-[13px] text-brand-muted whitespace-nowrap">
-                      {inquiry.createdAt.toLocaleDateString()}
-                    </td>
-                    <td className="py-4 px-6">
-                      <p className="font-inter text-[13px] text-brand-white">{inquiry.name}</p>
-                      <p className="font-inter text-[11px] text-brand-muted">{inquiry.email}</p>
-                      <p className="font-inter text-[11px] text-brand-muted">{inquiry.phone}</p>
-                    </td>
-                    <td className="py-4 px-6 font-inter text-[13px] text-brand-white">
-                      {inquiry.productName ? inquiry.productName : "General"}
-                    </td>
-                    <td className="py-4 px-6 font-inter text-[13px] text-brand-muted max-w-xs truncate">
-                      {inquiry.message}
-                    </td>
-                    <td className="py-4 px-6">
-                      {inquiry.status === 'NEW' && (
-                        <form action={async () => {
-                          "use server"
-                          await markAsRead(inquiry.id)
-                        }}>
-                          <button type="submit" className="text-brand-accent hover:text-brand-white font-inter text-[12px] underline underline-offset-2">Mark Read</button>
-                        </form>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+            <AdminTableCell>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-inter text-[15px] font-bold text-brand-white">{inquiry.name}</span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2 text-[11px] text-brand-muted">
+                    <Mail size={12} /> {inquiry.email}
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] text-brand-accent font-bold">
+                    <Phone size={12} /> {inquiry.phone}
+                  </div>
+                </div>
+              </div>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <div className="flex flex-col gap-3 max-w-sm">
+                <div className="flex items-center gap-2">
+                  <Box size={14} className="text-brand-accent" />
+                  <span className="font-inter text-[11px] font-bold text-brand-white uppercase tracking-widest">
+                    {inquiry.productName ? inquiry.productName : "GENERAL INQUIRY"}
+                  </span>
+                </div>
+                <p className="font-inter text-[13px] text-brand-muted leading-relaxed line-clamp-2 italic">
+                  "{inquiry.message}"
+                </p>
+              </div>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <AdminBadge type={inquiry.status === 'NEW' ? "info" : "default"}>
+                {inquiry.status === 'NEW' ? "Active / Unread" : "Processed"}
+              </AdminBadge>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <div className="flex items-center gap-4">
+                {inquiry.status === 'NEW' && (
+                  <form action={async () => {
+                    "use server"
+                    await markAsRead(inquiry.id)
+                  }}>
+                    <button 
+                      type="submit" 
+                      className="p-2.5 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent hover:bg-brand-accent hover:text-brand-black transition-all rounded-sm"
+                      title="Mark as Processed"
+                    >
+                      <CheckCircle2 size={16} />
+                    </button>
+                  </form>
+                )}
+                <a 
+                  href={`https://wa.me/${inquiry.phone?.replace(/[^0-9]/g, '')}`} 
+                  target="_blank"
+                  className="p-2.5 bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all rounded-sm"
+                  title="Reply via WhatsApp"
+                >
+                  <MessageSquare size={16} />
+                </a>
+                <DeleteButton id={inquiry.id} />
+              </div>
+            </AdminTableCell>
+          </AdminTableRow>
+        ))}
+      </AdminTable>
     </div>
   )
 }

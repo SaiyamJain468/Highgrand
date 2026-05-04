@@ -1,12 +1,19 @@
 "use client"
 
 import { useEffect } from "react"
+import { usePathname } from "next/navigation"
 import Lenis from "lenis"
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   useEffect(() => {
-    // Only initialize Lenis on Desktop for maximum stability on mobile
-    if (window.innerWidth <= 768) return
+    // Disable smooth scroll for admin and auth routes to ensure standard dashboard functionality
+    const isExcluded = pathname?.startsWith('/admin') || 
+                      pathname?.startsWith('/login') || 
+                      pathname?.startsWith('/register')
+
+    if (isExcluded || window.innerWidth <= 768) return
 
     const lenis = new Lenis({
       duration: 1.2,

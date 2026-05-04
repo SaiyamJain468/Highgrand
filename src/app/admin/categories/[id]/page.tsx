@@ -1,70 +1,59 @@
-import { updateCategory } from "../actions"
 import { prisma } from "@/lib/prisma"
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import CategoryEditForm from "./CategoryEditForm"
+import { AdminHeader } from "@/components/admin/AdminHeader"
 
-export default async function EditCategory({ params }: { params: { id: string } }) {
+export default async function EditCategory({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  
   const category = await prisma.category.findUnique({
-    where: { id: params.id }
+    where: { id }
   })
 
   if (!category) notFound()
 
-  // We need to bind the ID to the server action
-  const updateCategoryWithId = updateCategory.bind(null, category.id)
-
   return (
-    <div className="p-8 lg:p-12 max-w-3xl">
-      <div className="mb-10">
-        <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none">Edit Category</h1>
-        <Link href="/admin/categories" className="text-brand-accent hover:text-brand-white font-inter text-[13px] transition-colors mt-2 block">
-          ← Back to Categories
-        </Link>
-      </div>
+    <div className="p-8 lg:p-12 max-w-[1200px] mx-auto">
+      <AdminHeader 
+        title="Collection Refactoring" 
+        subtitle={`Updating structural parameters for: ${category.name}`}
+        breadcrumbs={[
+          { label: "Categories", href: "/admin/categories" },
+          { label: "Edit Category" }
+        ]}
+      />
 
-      <div className="bg-brand-surface1 border border-brand-border p-6 md:p-8">
-        <form action={updateCategoryWithId} className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Name</label>
-            <input name="name" type="text" defaultValue={category.name} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8">
+          <div className="bg-brand-surface1 border border-brand-border p-10 shadow-2xl">
+            <CategoryEditForm category={category} />
           </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Slug</label>
-            <input name="slug" type="text" defaultValue={category.slug} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Description</label>
-            <textarea name="description" rows={3} defaultValue={category.description || ''} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Image URL</label>
-            <input name="image" type="text" defaultValue={category.image || ''} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            <p className="text-[11px] text-brand-muted">For now, paste the Cloudinary URL. (CldUploadWidget can be integrated here later).</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Status</label>
-              <select name="status" defaultValue={category.status} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors">
-                <option value="ACTIVE">Active</option>
-                <option value="COMING_SOON">Coming Soon</option>
-                <option value="HIDDEN">Hidden</option>
-              </select>
+        </div>
+        
+        <div className="lg:col-span-4">
+          <div className="bg-brand-surface1 border border-brand-border p-8 sticky top-8">
+            <h3 className="font-bebas text-[24px] text-brand-white uppercase tracking-tight mb-4">Structure Info</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Internal ID</span>
+                <span className="text-[11px] text-brand-white font-mono">{category.id.slice(-8).toUpperCase()}</span>
+              </div>
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Status</span>
+                <span className="text-[11px] text-brand-accent uppercase font-bold">{category.status}</span>
+              </div>
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Type</span>
+                <span className="text-[11px] text-brand-white uppercase font-bold">Standard Collection</span>
+              </div>
             </div>
-            
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Display Order</label>
-              <input name="displayOrder" type="number" defaultValue={category.displayOrder} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+            <div className="mt-8 pt-8 border-t border-brand-border/50">
+              <p className="font-inter text-[12px] text-brand-muted leading-relaxed">
+                Reorganizing collections affects global navigation and SEO indexing. Ensure slugs are permanent to avoid broken links.
+              </p>
             </div>
           </div>
-
-          <button type="submit" className="bg-brand-white text-brand-black px-6 py-4 mt-4 font-inter text-[13px] font-bold uppercase tracking-widest hover:bg-brand-accent transition-colors">
-            Update Category
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   )

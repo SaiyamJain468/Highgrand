@@ -1,12 +1,16 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Phone, MapPin, MessageCircle, ShieldCheck } from "lucide-react"
 import SkewSection from "@/components/public/SkewSection"
 import TextReveal from "@/components/public/TextReveal"
 import Magnetic from "@/components/public/Magnetic"
+import { createInquiry } from "./actions"
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917669932444"
   
   return (
@@ -94,39 +98,74 @@ export default function ContactPage() {
               <div className="absolute top-0 left-0 w-2 h-full bg-brand-accent transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
               
               <h3 className="font-bebas text-[48px] text-brand-white uppercase mb-10">Direct Inquiry</h3>
-              <form className="flex flex-col gap-8" onSubmit={e => { e.preventDefault(); alert("Inquiry sent successfully.") }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="flex flex-col gap-3">
-                    <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Full Name</label>
-                    <input type="text" required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors" placeholder="ENTER YOUR NAME" />
+              
+              {submitted ? (
+                <div className="py-10 text-center flex flex-col items-center">
+                  <div className="w-20 h-20 bg-brand-accent/10 border border-brand-accent/20 rounded-full flex items-center justify-center mb-8">
+                    <ShieldCheck size={40} className="text-brand-accent" />
+                  </div>
+                  <h4 className="font-bebas text-[36px] text-brand-white uppercase mb-4">Inquiry Received</h4>
+                  <p className="font-inter text-[16px] text-brand-muted max-w-[400px] mb-10">
+                    Your details have been securely transmitted. An industrial specialist will contact you on WhatsApp or phone within 12 hours.
+                  </p>
+                  <button 
+                    onClick={() => setSubmitted(false)}
+                    className="font-inter text-[12px] font-bold text-brand-accent uppercase tracking-widest hover:text-white transition-colors"
+                  >
+                    Send Another Inquiry
+                  </button>
+                </div>
+              ) : (
+                <form 
+                  className="flex flex-col gap-8" 
+                  action={async (formData) => {
+                    setLoading(true)
+                    const res = await createInquiry(formData)
+                    if (res?.success) {
+                      setSubmitted(true)
+                    } else {
+                      alert(res?.error || "Failed to send inquiry")
+                    }
+                    setLoading(false)
+                  }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="flex flex-col gap-3">
+                      <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Full Name</label>
+                      <input name="name" type="text" required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors" placeholder="ENTER YOUR NAME" />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Phone Number</label>
+                      <input name="phone" type="tel" required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors" placeholder="+91 00000 00000" />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-3">
-                    <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Phone Number</label>
-                    <input type="tel" required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors" placeholder="+91 00000 00000" />
+                    <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Your Requirement</label>
+                    <textarea name="message" rows={4} required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors resize-none" placeholder="DESCRIBE YOUR BRAND OR ORDER VOLUME"></textarea>
                   </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <label className="font-inter font-bold text-[11px] uppercase tracking-widest text-brand-muted">Your Requirement</label>
-                  <textarea rows={4} required className="bg-transparent border-b border-brand-border/50 py-4 text-brand-white outline-none focus:border-brand-accent transition-colors resize-none" placeholder="DESCRIBE YOUR BRAND OR ORDER VOLUME"></textarea>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-6 mt-6">
-                  <Magnetic>
-                    <button type="submit" className="flex-1 bg-brand-white text-brand-black py-6 px-12 font-inter text-[14px] font-black uppercase tracking-widest hover:bg-brand-accent transition-all shadow-xl">
-                      Send Inquiry
-                    </button>
-                  </Magnetic>
-                  <Magnetic>
-                    <a 
-                      href={`https://wa.me/${whatsappNumber}`} 
-                      target="_blank"
-                      className="flex-1 flex items-center justify-center gap-4 bg-transparent border border-brand-whatsapp text-brand-whatsapp py-6 px-12 font-inter text-[14px] font-black uppercase tracking-widest hover:bg-brand-whatsapp hover:text-brand-black transition-all shadow-xl"
-                    >
-                      <MessageCircle size={24} /> WhatsApp Fast-Track
-                    </a>
-                  </Magnetic>
-                </div>
-              </form>
+                  
+                  <div className="flex flex-col sm:flex-row gap-6 mt-6">
+                    <Magnetic>
+                      <button 
+                        disabled={loading}
+                        type="submit" 
+                        className="flex-1 bg-brand-white text-brand-black py-6 px-12 font-inter text-[14px] font-black uppercase tracking-widest hover:bg-brand-accent transition-all shadow-xl disabled:opacity-50"
+                      >
+                        {loading ? "Transmitting..." : "Send Inquiry"}
+                      </button>
+                    </Magnetic>
+                    <Magnetic>
+                      <a 
+                        href={`https://wa.me/${whatsappNumber}`} 
+                        target="_blank"
+                        className="flex-1 flex items-center justify-center gap-4 bg-transparent border border-brand-whatsapp text-brand-whatsapp py-6 px-12 font-inter text-[14px] font-black uppercase tracking-widest hover:bg-brand-whatsapp hover:text-brand-black transition-all shadow-xl"
+                      >
+                        <MessageCircle size={24} /> WhatsApp Fast-Track
+                      </a>
+                    </Magnetic>
+                  </div>
+                </form>
+              )}
             </motion.div>
           </div>
         </div>

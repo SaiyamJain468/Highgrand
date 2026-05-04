@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma"
-import { saveSettings } from "./actions"
+import SettingsForm from "./SettingsForm"
+import { AdminHeader } from "@/components/admin/AdminHeader"
+import { ShieldCheck, Settings } from "lucide-react"
 
 export default async function AdminSettings() {
   const settings = await prisma.siteSettings.findMany()
@@ -9,39 +11,52 @@ export default async function AdminSettings() {
   }, {} as Record<string, string>)
 
   return (
-    <div className="p-8 lg:p-12">
-      <div className="mb-10">
-        <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none">Site Settings</h1>
-        <p className="font-inter text-[14px] text-brand-muted mt-2">Manage global configurations such as the announcement bar.</p>
-      </div>
+    <div className="p-8 lg:p-12 max-w-[1200px] mx-auto">
+      <AdminHeader 
+        title="Global Configuration" 
+        subtitle="Fine-tune your platform's operational parameters, marketing touchpoints, and system-wide behaviors."
+        breadcrumbs={[{ label: "Site Settings" }]}
+      />
 
-      <div className="max-w-2xl bg-brand-surface1 border border-brand-border p-8">
-        <form action={saveSettings} className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="font-inter font-medium text-[11px] uppercase tracking-widest text-brand-muted">Top Announcement Bar Text</label>
-            <input 
-              type="text" 
-              name="announcementText"
-              defaultValue={settingsMap["announcementText"] || "NEW DROP: OVERSIZED HOODIES ARRIVING NEXT WEEK. 0% SHRINKAGE."}
-              className="bg-brand-black border border-brand-border p-3 text-white text-sm outline-none focus:border-brand-accent w-full"
-            />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8">
+          <div className="bg-brand-surface1 border border-brand-border p-10 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-5">
+              <Settings size={120} />
+            </div>
+            <div className="relative z-10">
+              <SettingsForm settingsMap={settingsMap} />
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="font-inter font-medium text-[11px] uppercase tracking-widest text-brand-muted">WhatsApp Number (inc. Country Code)</label>
-            <input 
-              type="text" 
-              name="whatsappNumber"
-              defaultValue={settingsMap["whatsappNumber"] || "917669932444"}
-              className="bg-brand-black border border-brand-border p-3 text-white text-sm outline-none focus:border-brand-accent w-full"
-            />
-          </div>
+        </div>
 
-          <div className="pt-6 border-t border-brand-border flex justify-end">
-            <button type="submit" className="bg-brand-white text-brand-black px-8 py-3.5 font-inter font-semibold text-[13px] uppercase tracking-widest hover:bg-brand-accent transition-colors">
-              Save Settings
-            </button>
+        <div className="lg:col-span-4 space-y-6">
+          <div className="bg-brand-surface1 border border-brand-border p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-brand-accent/10 flex items-center justify-center rounded-sm">
+                <ShieldCheck className="text-brand-accent" size={20} />
+              </div>
+              <h3 className="font-bebas text-[24px] text-brand-white uppercase tracking-tight">System Authority</h3>
+            </div>
+            <p className="font-inter text-[13px] text-brand-muted leading-relaxed mb-6">
+              These settings propagate across all client-side sessions globally. Changes are atomic and cached via LiteSpeed for performance.
+            </p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between py-3 border-b border-brand-border/50">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Database Sync</span>
+                <span className="text-[11px] text-emerald-500 font-bold uppercase tracking-widest">Active</span>
+              </div>
+              <div className="flex items-center justify-between py-3 border-b border-brand-border/50">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Cache State</span>
+                <span className="text-[11px] text-emerald-500 font-bold uppercase tracking-widest">Optimized</span>
+              </div>
+              <div className="flex items-center justify-between py-3">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Security Level</span>
+                <span className="text-[11px] text-brand-accent font-bold uppercase tracking-widest">Admin Restricted</span>
+              </div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   )

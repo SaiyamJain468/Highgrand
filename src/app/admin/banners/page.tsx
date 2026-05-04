@@ -1,6 +1,11 @@
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { toggleBanner, deleteBanner } from "./actions"
+import DeleteButton from "./DeleteButton"
+import { AdminHeader } from "@/components/admin/AdminHeader"
+import { AdminTable, AdminTableRow, AdminTableCell } from "@/components/admin/AdminTable"
+import { AdminBadge } from "@/components/admin/AdminBadge"
+import { Plus, Eye, EyeOff, Monitor, Smartphone } from "lucide-react"
 
 export default async function AdminBanners() {
   const banners = await prisma.banner.findMany({
@@ -8,70 +13,90 @@ export default async function AdminBanners() {
   })
 
   return (
-    <div className="p-8 lg:p-12">
-      <div className="flex justify-between items-center mb-10">
-        <div>
-          <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none">Hero Banners</h1>
-          <p className="font-inter text-[14px] text-brand-muted mt-2">Manage the homepage hero image loop and active status.</p>
-        </div>
-        <Link href="/admin/banners/new" className="bg-brand-white text-brand-black px-6 py-3 font-inter text-[12px] font-semibold uppercase tracking-widest hover:bg-brand-accent transition-colors block">
-          + Upload Banner
-        </Link>
-      </div>
+    <div className="p-8 lg:p-12 max-w-[1600px] mx-auto">
+      <AdminHeader 
+        title="Visual Identity: Banners" 
+        subtitle="Manage high-impact visual narratives, hero sequences, and marketing campaigns."
+        breadcrumbs={[{ label: "Banners" }]}
+        actions={
+          <Link href="/admin/banners/new" className="bg-brand-white text-brand-black px-8 py-4 font-inter text-[12px] font-bold uppercase tracking-[0.2em] hover:bg-brand-accent transition-all flex items-center gap-2 shadow-xl hover:-translate-y-1">
+            <Plus size={16} strokeWidth={3} /> Upload New Banner
+          </Link>
+        }
+      />
 
-      <div className="bg-brand-surface1 border border-brand-border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-brand-surface2 border-b border-brand-border">
-                <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6 w-32">Preview</th>
-                <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Name (Alt)</th>
-                <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Status</th>
-                <th className="font-inter font-medium text-[11px] text-brand-muted uppercase tracking-widest py-4 px-6">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {banners.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="py-8 text-center text-brand-muted font-inter text-[13px]">No banners found.</td>
-                </tr>
-              ) : (
-                banners.map((banner) => (
-                  <tr key={banner.id} className="border-b border-brand-border hover:bg-brand-surface2/50 transition-colors">
-                    <td className="py-4 px-6">
-                      <div className="w-24 h-12 bg-brand-surface2 border border-brand-border overflow-hidden">
-                        <img src={banner.image} alt={banner.altText} className="w-full h-full object-cover" />
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 font-inter text-[13px] text-brand-white">{banner.altText}</td>
-                    <td className="py-4 px-6">
-                      <span className={`text-[10px] px-2 py-1 font-inter font-semibold uppercase tracking-wider ${banner.isActive ? 'bg-[#0D2010] text-brand-success' : 'bg-[#2A2A2A] text-brand-disabled'}`}>
-                        {banner.isActive ? 'Active' : 'Disabled'}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 flex gap-4 mt-2">
-                      <form action={async () => {
-                        "use server"
-                        await toggleBanner(banner.id, banner.isActive)
-                      }}>
-                        <button type="submit" className="text-brand-muted hover:text-brand-white font-inter text-[12px] underline underline-offset-2">
-                          {banner.isActive ? 'Disable' : 'Enable'}
-                        </button>
-                      </form>
-                      <form action={async () => {
-                        "use server"
-                        await deleteBanner(banner.id)
-                      }}>
-                        <button type="submit" className="text-brand-muted hover:text-red-500 font-inter text-[12px] underline underline-offset-2">Delete</button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AdminTable 
+        headers={["Asset Previews", "Metadata", "Visual Priority", "Global Status", "Control"]}
+        emptyMessage="No marketing banners found."
+      >
+        {banners.map((banner) => (
+          <AdminTableRow key={banner.id}>
+            <AdminTableCell>
+              <div className="flex items-center gap-6">
+                {/* Desktop Preview */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Monitor size={10} className="text-brand-muted" />
+                    <span className="text-[9px] uppercase font-bold text-brand-muted tracking-widest">Desktop</span>
+                  </div>
+                  <div className="w-32 h-16 bg-brand-surface2 border border-brand-border/50 overflow-hidden group-hover:border-brand-accent transition-colors">
+                    <img src={banner.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Desktop Preview" />
+                  </div>
+                </div>
+
+                {/* Mobile Preview */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Smartphone size={10} className="text-brand-muted" />
+                    <span className="text-[9px] uppercase font-bold text-brand-muted tracking-widest">Mobile</span>
+                  </div>
+                  <div className="w-12 h-16 bg-brand-surface2 border border-brand-border/50 overflow-hidden group-hover:border-brand-accent transition-colors">
+                    <img src={banner.mobileImage || banner.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mobile Preview" />
+                  </div>
+                </div>
+              </div>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <div className="flex flex-col gap-1">
+                <p className="font-inter text-[14px] font-bold text-brand-white">{banner.altText || "Untitled Banner"}</p>
+                <p className="font-inter text-[11px] text-brand-muted truncate max-w-[200px]">{banner.link || "No destination link"}</p>
+              </div>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <div className="flex flex-col">
+                <p className="font-bebas text-[24px] text-brand-accent leading-none">{banner.displayOrder}</p>
+                <p className="font-inter text-[9px] text-brand-muted uppercase font-bold tracking-widest mt-1">Order Sequence</p>
+              </div>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <AdminBadge type={banner.isActive ? "success" : "default"}>
+                {banner.isActive ? "Active / Visible" : "Hidden / Inactive"}
+              </AdminBadge>
+            </AdminTableCell>
+
+            <AdminTableCell>
+              <div className="flex items-center gap-4">
+                <form action={async () => {
+                  "use server"
+                  await toggleBanner(banner.id, banner.isActive)
+                }}>
+                  <button 
+                    type="submit" 
+                    className="p-2.5 bg-brand-surface2 border border-brand-border text-brand-muted hover:text-brand-white transition-all rounded-sm"
+                    title={banner.isActive ? "Hide Banner" : "Show Banner"}
+                  >
+                    {banner.isActive ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </form>
+                <DeleteButton id={banner.id} />
+              </div>
+            </AdminTableCell>
+          </AdminTableRow>
+        ))}
+      </AdminTable>
     </div>
   )
 }

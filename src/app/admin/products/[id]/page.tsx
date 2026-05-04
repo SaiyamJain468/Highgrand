@@ -1,134 +1,73 @@
-import { updateProduct } from "../actions"
 import { prisma } from "@/lib/prisma"
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import ProductEditForm from "./ProductEditForm"
+import { AdminHeader } from "@/components/admin/AdminHeader"
+import Link from "next/link"
 
-export default async function EditProduct({ params }: { params: { id: string } }) {
+export default async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  
   const product = await prisma.product.findUnique({
-    where: { id: params.id }
+    where: { id }
   })
 
   if (!product) notFound()
 
-  const categories = await prisma.category.findMany()
-
-  // Bind ID to action
-  const updateProductWithId = updateProduct.bind(null, product.id)
+  const categories = await prisma.category.findMany({
+    orderBy: { name: 'asc' }
+  })
 
   return (
-    <div className="p-8 lg:p-12 max-w-4xl">
-      <div className="mb-10">
-        <h1 className="font-bebas text-[48px] text-brand-white uppercase leading-none">Edit Product</h1>
-        <Link href="/admin/products" className="text-brand-accent hover:text-brand-white font-inter text-[13px] transition-colors mt-2 block">
-          ← Back to Products
-        </Link>
-      </div>
+    <div className="p-8 lg:p-12 max-w-[1200px] mx-auto">
+      <AdminHeader 
+        title="Protocol Modification" 
+        subtitle={`Updating technical specifications for: ${product.name}`}
+        breadcrumbs={[
+          { label: "Products", href: "/admin/products" },
+          { label: "Edit Product" }
+        ]}
+        actions={
+          <Link 
+            href={`/products/${product.slug}`} 
+            target="_blank"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-surface2 border border-brand-border text-brand-accent font-inter text-[12px] font-bold uppercase tracking-widest hover:bg-brand-surface1 transition-all"
+          >
+            View on Site ↗
+          </Link>
+        }
+      />
 
-      <div className="bg-brand-surface1 border border-brand-border p-6 md:p-8">
-        <form action={updateProductWithId} className="flex flex-col gap-8">
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Name *</label>
-              <input name="name" type="text" defaultValue={product.name} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Slug *</label>
-              <input name="slug" type="text" defaultValue={product.slug} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8">
+          <div className="bg-brand-surface1 border border-brand-border p-10 shadow-2xl">
+            <ProductEditForm categories={categories} product={product} />
           </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Category *</label>
-            <select name="categoryId" defaultValue={product.categoryId} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors">
-              <option value="">Select Category</option>
-              {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Short Description</label>
-            <textarea name="shortDescription" rows={2} defaultValue={product.shortDescription || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Long Description</label>
-            <textarea name="longDescription" rows={5} defaultValue={product.longDescription || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">MRP Label</label>
-              <input name="mrpLabel" type="text" defaultValue={product.mrpLabel || ''} required placeholder="₹850" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+        </div>
+        
+        <div className="lg:col-span-4">
+          <div className="bg-brand-surface1 border border-brand-border p-8 sticky top-8">
+            <h3 className="font-bebas text-[24px] text-brand-white uppercase tracking-tight mb-4">Meta Information</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Internal ID</span>
+                <span className="text-[11px] text-brand-white font-mono">{product.id.slice(-8).toUpperCase()}</span>
+              </div>
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Last Modified</span>
+                <span className="text-[11px] text-brand-white">{new Date().toLocaleDateString()}</span>
+              </div>
+              <div className="flex justify-between border-b border-brand-border/50 pb-2">
+                <span className="text-[10px] text-brand-muted uppercase font-bold tracking-widest">Creator</span>
+                <span className="text-[11px] text-brand-accent uppercase font-bold">Admin Authority</span>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Wholesale Label</label>
-              <input name="wholesaleLabel" type="text" defaultValue={product.wholesaleLabel || ''} required placeholder="₹420" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">MOQ Note</label>
-              <input name="moqNote" type="text" defaultValue={product.moqNote || ''} required placeholder="No minimum order" className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
+            <div className="mt-8 pt-8 border-t border-brand-border/50">
+              <p className="font-inter text-[12px] text-brand-muted leading-relaxed">
+                Modifying this entry will trigger a global cache revalidation. Please ensure all details are accurate before deploying.
+              </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">GSM</label>
-              <input name="gsm" type="number" defaultValue={product.gsm || 0} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Composition</label>
-              <input name="composition" type="text" defaultValue={product.composition || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Weave</label>
-              <input name="weave" type="text" defaultValue={product.weave || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Finish</label>
-              <input name="finish" type="text" defaultValue={product.finish || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Wash Care</label>
-            <input name="washCare" type="text" defaultValue={product.washCare || ''} required className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Images (JSON Array)</label>
-            <input name="images" type="text" defaultValue={product.images || "[]"} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-            <p className="text-[11px] text-brand-muted">Paste JSON array of image URLs (e.g. ["url1", "url2"])</p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Sizes (JSON Array)</label>
-            <input name="sizes" type="text" defaultValue={product.sizes || "[]"} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="font-inter text-[11px] font-bold text-brand-muted uppercase tracking-widest">Colors (JSON Array)</label>
-            <input name="colors" type="text" defaultValue={product.colors || "[]"} className="bg-brand-black border border-brand-border p-3 text-brand-white font-inter text-[14px] focus:outline-none focus:border-brand-accent transition-colors" />
-          </div>
-
-          <div className="flex items-center gap-6 mt-4">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" name="isActive" value="true" defaultChecked={product.isActive} className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent" />
-              <span className="font-inter text-[13px] text-brand-white">Active</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" name="isFeatured" value="true" defaultChecked={product.isFeatured} className="w-4 h-4 bg-brand-black border-brand-border accent-brand-accent" />
-              <span className="font-inter text-[13px] text-brand-white">Featured</span>
-            </label>
-          </div>
-
-          <button type="submit" className="bg-brand-white text-brand-black px-6 py-4 mt-4 font-inter text-[13px] font-bold uppercase tracking-widest hover:bg-brand-accent transition-colors self-start">
-            Update Product
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   )

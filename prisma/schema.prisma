@@ -83,6 +83,9 @@ model Product {
   sizes            String    // JSON: ["XS","S","M","L","XL","XXL","3XL"]
   colors           String    @db.LongText  // JSON array of {name, hex, image}
   tags             String?   // JSON array of strings
+  customContent    String?   @db.LongText  // JSON array of content blocks
+  heroImage        String?   @db.Text
+  hoverImage       String?   @db.Text
   isActive         Boolean   @default(true)
   isFeatured       Boolean   @default(false)
   displayOrder     Int       @default(0)

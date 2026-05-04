@@ -21,6 +21,7 @@ export default function RegisterPage() {
   // Real submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
     setError("")
 
@@ -39,10 +40,10 @@ export default function RegisterPage() {
         return
       }
 
-      setSubmitted(true)
+      // Fast redirect to success page
+      window.location.href = "/register/success"
     } catch (err) {
       setError("An unexpected error occurred.")
-    } finally {
       setLoading(false)
     }
   }
@@ -51,23 +52,6 @@ export default function RegisterPage() {
     hidden: { opacity: 0, x: 40 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
     exit: { opacity: 0, x: -40, transition: { duration: 0.25 } }
-  }
-
-  if (submitted) {
-    return (
-      <div className="min-h-[80vh] flex items-center justify-center bg-brand-black px-6">
-        <div className="max-w-md w-full bg-brand-surface1 border border-brand-border p-8 text-center flex flex-col items-center">
-          <CheckCircle2 size={48} className="text-brand-success mb-6" />
-          <h2 className="font-bebas text-[36px] text-brand-white uppercase mb-4">Application Submitted!</h2>
-          <p className="font-inter text-[15px] text-brand-muted mb-8 leading-relaxed">
-            Thank you for registering. Our team will review your application and approve your wholesale access within 24 hours. We will notify you via email.
-          </p>
-          <Link href="/" className="bg-brand-white text-brand-black px-8 py-3.5 font-inter font-semibold text-[13px] uppercase tracking-widest hover:bg-brand-accent transition-colors w-full">
-            Return to Homepage
-          </Link>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -174,8 +158,8 @@ export default function RegisterPage() {
 
                 <div className="mt-auto flex gap-4">
                   <button type="button" onClick={() => setStep(2)} className="w-[100px] border border-brand-border text-brand-muted py-3.5 font-inter font-medium text-[13px] uppercase hover:text-white transition-colors">Back</button>
-                  <button type="submit" className="flex-1 bg-brand-accent text-brand-black py-3.5 font-inter font-semibold text-[13px] uppercase tracking-widest hover:bg-brand-white transition-colors">
-                    Submit Application
+                  <button disabled={loading} type="submit" className="flex-1 bg-brand-accent text-brand-black py-3.5 font-inter font-semibold text-[13px] uppercase tracking-widest hover:bg-brand-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    {loading ? "Submitting..." : "Submit Application"}
                   </button>
                 </div>
               </motion.form>

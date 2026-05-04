@@ -1,7 +1,9 @@
 "use client"
 
 import { CldUploadWidget } from "next-cloudinary"
-import { ImagePlus, X } from "lucide-react"
+import { ImagePlus, X, Database } from "lucide-react"
+import { useState } from "react"
+import MediaLibraryModal from "./MediaLibraryModal"
 
 interface ImageUploadProps {
   value: string[]; // Always an array for flexibility, even if length is 1 for categories
@@ -16,8 +18,18 @@ export default function ImageUpload({
   onRemove,
   maxFiles = 10
 }: ImageUploadProps) {
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false)
+
   const onUpload = (result: any) => {
     onChange(result.info.secure_url)
+  }
+
+  const onSelectFromLibrary = (url: string) => {
+    if (value.includes(url)) {
+      onRemove(url)
+    } else {
+      onChange(url)
+    }
   }
 
   return (
@@ -39,30 +51,53 @@ export default function ImageUpload({
         ))}
       </div>
       
-      {value.length < maxFiles && (
-        <CldUploadWidget 
-          onSuccess={onUpload} 
-          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "highgrand_uploads"}
-          options={{ maxFiles: maxFiles === 1 ? 1 : 10 }}
+      <div className="flex gap-4">
+        {value.length < maxFiles && (
+          <CldUploadWidget 
+            onSuccess={onUpload} 
+            uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "highgrand_uploads"}
+            options={{ 
+              maxFiles: maxFiles === 1 ? 1 : 10,
+              sources: ["local", "url", "camera"],
+              multiple: maxFiles > 1,
+              clientAllowedFormats: ["png", "jpeg", "jpg", "webp"],
+            }}
+          >
+            {({ open }) => {
+              const onClick = (e: any) => {
+                e.preventDefault();
+                open();
+              }
+              return (
+                <button
+                  type="button"
+                  onClick={onClick}
+                  className="flex items-center gap-2 px-4 py-3 bg-brand-surface2 border border-brand-border text-brand-white font-inter text-[13px] font-medium hover:bg-brand-surface1 transition-colors"
+                >
+                  <ImagePlus size={16} />
+                  Upload New
+                </button>
+              )
+            }}
+          </CldUploadWidget>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setIsLibraryOpen(true)}
+          className="flex items-center gap-2 px-4 py-3 bg-brand-black border border-brand-accent/30 text-brand-accent font-inter text-[13px] font-medium hover:bg-brand-accent hover:text-brand-black transition-all"
         >
-          {({ open }) => {
-            const onClick = (e: any) => {
-              e.preventDefault();
-              open();
-            }
-            return (
-              <button
-                type="button"
-                onClick={onClick}
-                className="flex items-center gap-2 px-4 py-3 bg-brand-surface2 border border-brand-border text-brand-white font-inter text-[13px] font-medium hover:bg-brand-surface1 transition-colors"
-              >
-                <ImagePlus size={16} />
-                Upload an Image
-              </button>
-            )
-          }}
-        </CldUploadWidget>
-      )}
+          <Database size={16} />
+          Choose from Library
+        </button>
+      </div>
+
+      <MediaLibraryModal 
+        isOpen={isLibraryOpen}
+        onClose={() => setIsLibraryOpen(false)}
+        onSelect={onSelectFromLibrary}
+        selectedUrls={value}
+      />
     </div>
   )
 }
