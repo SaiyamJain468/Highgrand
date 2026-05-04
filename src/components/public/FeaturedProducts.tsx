@@ -37,25 +37,25 @@ export default async function FeaturedProducts() {
       id: '1', name: 'Premium Oversized T-Shirt - Black', slug: 'premium-oversized-black', 
       images: '["https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"]', 
       category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850', wholesaleLabel: '₹420' 
+      mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
     },
     { 
       id: '2', name: 'Premium Oversized T-Shirt - White', slug: 'premium-oversized-white', 
       images: '["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop"]', 
       category: { name: 'Oversized Tees' }, gsm: 220, composition: '100% Cotton', 
-      mrpLabel: '₹850', wholesaleLabel: '₹420' 
+      mrpLabel: '₹850', wholesaleLabel: '₹420', hoverImage: null 
     },
     { 
       id: '3', name: 'Vintage Wash Tee - Olive', slug: 'vintage-wash-olive', 
       images: '["https://images.unsplash.com/photo-1618354691438-25bc04584c23?q=80&w=600&auto=format&fit=crop"]', 
       category: { name: 'Acid Wash' }, gsm: 240, composition: '100% Cotton', 
-      mrpLabel: '₹999', wholesaleLabel: '₹550' 
+      mrpLabel: '₹999', wholesaleLabel: '₹550', hoverImage: null 
     },
     { 
       id: '4', name: 'Heavyweight Boxy Fit - Navy', slug: 'boxy-fit-navy', 
       images: '["https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop"]', 
       category: { name: 'Premium Boxy' }, gsm: 260, composition: '100% Cotton', 
-      mrpLabel: '₹1200', wholesaleLabel: '₹680' 
+      mrpLabel: '₹1200', wholesaleLabel: '₹680', hoverImage: null 
     }
   ]
 
