@@ -17,17 +17,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: "HIGHGRAND — Premium Apparel Manufacturer",
     description: "Industrial scale manufacturing for independent fashion brands. Zero MOQ. Factory direct from Delhi.",
-    url: "https://highgrand.com",
+    url: "https://highgrand.in",
     siteName: "Highgrand",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
       },
     ],
     locale: "en_IN",
     type: "website",
+  },
+  verification: {
+    google: "-3vklbLgODIgvmvssG-8YzXReb6Wv13BTT8OrMPjw4M",
   },
   robots: {
     index: true,
