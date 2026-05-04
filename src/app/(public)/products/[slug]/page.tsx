@@ -6,6 +6,20 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 
+export const revalidate = 3600; // Cache for 1 hour
+
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+    select: { slug: true },
+    take: 20 // Pre-render top 20 products
+  })
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }))
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const paramsResolved = await params
   const product = await prisma.product.findUnique({
